@@ -64,6 +64,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         setupMobArena();
 
         loadConfig();
+        LogHelper.load();
         extensionManager.reload();
 
         sender.sendMessage(CommonUtils.color("&7Done... reload took &f" + (System.currentTimeMillis() - start) + "&7ms."));
