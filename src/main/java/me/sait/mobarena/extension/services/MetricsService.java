@@ -1,29 +1,26 @@
 package me.sait.mobarena.extension.services;
 
-import me.sait.mobarena.extension.MobArenaExtension;
+import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.log.LogHelper;
 import me.sait.mobarena.extension.log.LogLevel;
 import org.bstats.bukkit.Metrics;
 
 public class MetricsService {
 
-    private final MobArenaExtension extension;
+    private final MobArenaExtensionPlugin plugin;
+
     private Metrics metrics;
 
     public MetricsService() {
-        extension = MobArenaExtension.getPlugin();
+        plugin = MobArenaExtensionPlugin.getInstance();
     }
 
     public void start() {
-        if (extension == null || !extension.isEnabled()) {
+        if (plugin == null || !plugin.isEnabled()) {
             return;
         }
 
         LogHelper.log("Starting Metrics", LogLevel.DETAIL);
-        metrics = new Metrics(extension);
-    }
-
-    public void stop() {
-        //doesnt need to stop metric service, just disable the extension plugin
+        metrics = new Metrics(plugin);
     }
 }

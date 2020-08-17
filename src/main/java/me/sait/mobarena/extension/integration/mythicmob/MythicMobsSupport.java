@@ -5,8 +5,8 @@ import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-import me.sait.mobarena.extension.MobArenaExtension;
-import me.sait.mobarena.extension.api.Integration;
+import me.sait.mobarena.extension.MobArenaExtensionPlugin;
+import me.sait.mobarena.extension.extension.Extension;
 import me.sait.mobarena.extension.integration.mythicmob.listeners.MobArenaListener;
 import me.sait.mobarena.extension.integration.mythicmob.listeners.MythicMobListener;
 import me.sait.mobarena.extension.log.LogHelper;
@@ -16,33 +16,33 @@ import org.bukkit.entity.Entity;
 
 import java.util.*;
 
-public class MythicMobsSupport implements Integration {
+public class MythicMobsSupport implements Extension {
 
     public static final String PLUGIN_NAME = "MythicMobs";
 
-    private final MobArenaExtension extension;
+    private final MobArenaExtensionPlugin extension;
     private final MobArena mobArena;
 
     private final Map<Arena, List<Entity>> cachedMythicMobs = new HashMap<>();
     private final List<MythicMob> registeredMobs = new ArrayList<>();
 
-    public MythicMobsSupport(MobArenaExtension extension, MobArena mobArena) {
+    public MythicMobsSupport(MobArenaExtensionPlugin extension, MobArena mobArena) {
         this.extension = extension;
         this.mobArena = mobArena;
     }
 
     @Override
-    public void onEnable() {
+    public void initialize() {
         registerMobs();
         registerListeners();
     }
 
     @Override
-    public void onReload() {
+    public void reload() {
     }
 
     @Override
-    public void onDisable() {
+    public void disable() {
     }
 
     public void arenaSpawnMythicMob(Arena arena, Entity entity) {

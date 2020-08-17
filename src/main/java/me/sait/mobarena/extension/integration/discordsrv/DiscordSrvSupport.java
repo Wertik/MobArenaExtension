@@ -3,11 +3,11 @@ package me.sait.mobarena.extension.integration.discordsrv;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;
 import github.scarsz.discordsrv.DiscordSRV;
-import me.sait.mobarena.extension.api.Integration;
+import me.sait.mobarena.extension.extension.Extension;
 import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSrvListener;
 import org.bukkit.entity.Player;
 
-public class DiscordSrvSupport implements Integration {
+public class DiscordSrvSupport implements Extension {
 
     public static final String PLUGIN_NAME = "DiscordSRV";
 
@@ -19,16 +19,16 @@ public class DiscordSrvSupport implements Integration {
     }
 
     @Override
-    public void onEnable() {
+    public void initialize() {
         registerListeners();
     }
 
     @Override
-    public void onReload() {
+    public void reload() {
     }
 
     @Override
-    public void onDisable() {
+    public void disable() {
         unregisterListeners();
     }
 

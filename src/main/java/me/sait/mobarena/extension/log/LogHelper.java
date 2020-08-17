@@ -1,6 +1,6 @@
 package me.sait.mobarena.extension.log;
 
-import me.sait.mobarena.extension.MobArenaExtension;
+import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.config.ConfigManager;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
@@ -67,7 +67,7 @@ public class LogHelper {
     }
 
     private static Logger getLog() {
-        MobArenaExtension extension = MobArenaExtension.getPlugin();
+        MobArenaExtensionPlugin extension = MobArenaExtensionPlugin.getPlugin();
         return extension != null ? extension.getLogger() : Bukkit.getLogger();
     }
 }

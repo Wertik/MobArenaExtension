@@ -1,10 +1,10 @@
 name: ${project.name}
 version: ${project.version}
 author: Sait
-main: me.sait.mobarena.extension.MobArenaExtension
+main: me.sait.mobarena.extension.MobArenaExtensionPlugin
 depend:
-- MobArena
+  - MobArena
 softdepend:
-- MythicMobs
-- PlaceholderAPI
-- DiscordSRV
+  - MythicMobs
+  - PlaceholderAPI
+  - DiscordSRV

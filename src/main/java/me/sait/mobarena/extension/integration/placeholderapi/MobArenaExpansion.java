@@ -3,79 +3,43 @@ package me.sait.mobarena.extension.integration.placeholderapi;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.sait.mobarena.extension.MobArenaExtension;
-import me.sait.mobarena.extension.api.Integration;
-import me.sait.mobarena.extension.config.Constants;
-import me.sait.mobarena.extension.integration.placeholderapi.events.MAPlaceholderEvent;
-import me.sait.mobarena.extension.log.LogHelper;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class PlaceholderAPISupport extends PlaceholderExpansion implements Integration {
+public class MobArenaExpansion extends PlaceholderExpansion {
 
-    public static final String PLUGIN_NAME = "PlaceholderAPI";
-
-    private static final String identifier = "mobarena";
-
-    private final MobArenaExtension extension;
+    private final MobArenaExtensionPlugin plugin;
     private final MobArena mobArena;
 
-    public PlaceholderAPISupport(MobArenaExtension extension, MobArena mobArena) {
-        this.extension = extension;
+    public MobArenaExpansion(MobArena mobArena) {
+        this.plugin = MobArenaExtensionPlugin.getInstance();
         this.mobArena = mobArena;
     }
 
     @NotNull
     @Override
     public String getIdentifier() {
-        return identifier;
+        return "mobarena";
     }
 
     @NotNull
     @Override
     public String getAuthor() {
-        return String.join(", ", extension.getDescription().getAuthors());
+        return String.join(", ", plugin.getDescription().getAuthors());
     }
 
     @NotNull
     @Override
     public String getVersion() {
-        return extension.getDescription().getVersion();
+        return plugin.getDescription().getVersion();
     }
 
-    @Override
-    public void onEnable() {
-        register();
-    }
-
-    @Override
-    public void onReload() {
-    }
-
-    @Override
-    public void onDisable() {
-        unregister();
-    }
-
+    //TODO recode
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String param) {
 
-        MAPlaceholderEvent event = new MAPlaceholderEvent(param);
-        Bukkit.getPluginManager().callEvent(event);
-
-        if (event.getResult() != null) {
-            if (StringUtils.isBlank(event.getResult())) {
-                LogHelper.debug("Some plugin override this placeholder with an empty value: " + param);
-            }
-            return event.getResult();
-        }
-
-        if (param.equalsIgnoreCase("prefix")) {
-            return getGlobalPrefix();
-        } else if (param.equalsIgnoreCase("total_enabled")) {
+        if (param.equalsIgnoreCase("total_enabled")) {
             return String.valueOf(mobArena.getArenaMaster().getEnabledArenas().size());
         }
 
@@ -95,12 +59,8 @@ public class PlaceholderAPISupport extends PlaceholderExpansion implements Integ
 
             } else if (param.equalsIgnoreCase("arena_prefix")) {
                 String prefix = arena.getSettings().getString("prefix", "");
-                if (prefix.isEmpty()) {
-                    return getGlobalPrefix();
-                } else {
-                    return prefix;
-                }
-
+                if (prefix == null) return "";
+                return prefix;
             } else if (param.equalsIgnoreCase("arena_wave")) {
                 return String.valueOf(arena.getWaveManager().getWaveNumber());
 
@@ -129,14 +89,5 @@ public class PlaceholderAPISupport extends PlaceholderExpansion implements Integ
         }
 
         return null;
-    }
-
-    private String getGlobalPrefix() {
-        String prefix = mobArena.getConfig().getString("global-settings.prefix", "");
-
-        if (prefix.isEmpty()) {
-            prefix = ChatColor.GREEN + "[" + Constants.MOB_ARENA_PLUGIN_NAME + "] ";
-        }
-        return prefix;
     }
 }
