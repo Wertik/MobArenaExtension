@@ -32,7 +32,7 @@ Available statistics:
 * `hits` -- amount of hits? I guess?
 * `lastWave` -- don't know
 
-`DiscordSRV`
+### DiscordSRV
 
 If in chat isolated arena, messages wont be sent to discord.
 
