@@ -25,7 +25,7 @@ mobarena_arena_name | name of arena that player is in
 mobarena_arena_wave | current wave number of the arena
 mobarena_arena_wave_final | the final wave number of the arena 
 mobarena_arena_mobs | amount of mobs alive in arena
-mobarena_statistic_<statName> | player statistic fetched from Mob Arena
+mobarena_statistic_(statName) | player statistic fetched from Mob Arena
 
 Available statistics:
 * `kills` -- amount of mob kills the player has
