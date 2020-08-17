@@ -52,6 +52,3 @@ Examples in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master
 ## Extension API
 
 Extend [Extension](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/java/me/sait/mobarena/extension/extensions/Extension.java), implement required methods and register it somewhere using ``YourExtension().register()``.
-
-## License
-The [license](/LICENSE) does not apply to files inside the /lib folder.
