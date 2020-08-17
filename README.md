@@ -1,11 +1,11 @@
 # Mob Arena Extension  [![Build status](https://ci.appveyor.com/api/projects/status/npoql7iisagunifw/branch/master?svg=true)](https://ci.appveyor.com/project/SaitDev/mobarenaextension/branch/master)
 
-Extend the supporting for 3rd pt plugins or additional features
+Extend the functionality of Mob Arena by using pre-coded extensions, or code one yourself with provided API.
 
 ## Getting Started
-* Download a snapshot from [Build server](https://ci.appveyor.com/project/SaitDev/mobarenaextension/build/artifacts). Install to your plugins folder. Make sure you dont forget to install MobArena as well
-* Enable which module you wanna in `plugins/MobArenaExtension/config.yml`
-
+* Download the plugin from [releases](https://github.com/Wertik/MobArenaExtension/releases)
+* Install the plugin (into your /plugins/ folder of course)
+* Enable wanted extension in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
 ### Supported Plugins
 
@@ -16,24 +16,35 @@ Extend the supporting for 3rd pt plugins or additional features
 
 `PlaceholderAPI`
 
-Added placeholder (still updating):
+Placeholders:
 
 Key | description
 ------------|-------------
-mobarena_prefix | global prefix 
 mobarena_total_enabled | amount of arenas is enabled
 mobarena_arena_name | name of arena that player is in
-mobarena_arena_prefix | prefix of arena that player is in
-mobarena_arena_wave | current wave of arena
-mobarena_arena_final_wave | 
-mobarena_arena_mobs | amount of live mobs
-mobarena_arena_killed | mobs that that player killed in this run
-mobarena_arena_damage_dealt | damages that player dealt in this run
-mobarena_arena_damage_received | damages that player received in this run
+mobarena_arena_wave | current wave number of the arena
+mobarena_arena_wave_final | the final wave number of the arena 
+mobarena_arena_mobs | amount of mobs alive in arena
+mobarena_statistic_<statName> | player statistic fetched from Mob Arena
+
+Available statistics:
+* `kills` -- amount of mob kills the player has
+* `dmgDone` -- amount of damage the player has done
+* `dmgTaken` -- amount of damage the player has taken
+* `swings` -- I have no idea, try it out
+* `hits` -- amount of hits? I guess?
+* `lastWave` -- don't know
 
 `DiscordSRV`
 
-In isolated chat arena, messages wont be sent to discord.
+If in chat isolated arena, messages wont be sent to discord.
+
+### Other extensions
+
+`Commands`
+
+Send commands on different Arena events.
+Examples in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
 ### Known Issues
 * MythicMobs allow using some non-living entity (armor stand) but MobArena only allow living entity. Which mean you can not use non-living entity mythic mob in MobArena `yet`
@@ -43,8 +54,9 @@ In isolated chat arena, messages wont be sent to discord.
 
 3 first issues will need to wait for the next MobArena [major patch](https://github.com/garbagemule/MobArena/projects/5)
 
+## Extension API
+
+Extend [Extension](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/java/me/sait/mobarena/extension/extensions/Extension.java), implement required methods and register it somewhere using ``YourExtension().register()``.
 
 ## License
-The license does not apply to files inside folder /libs
-
-[MIT](/LICENSE)
+The [license](/LICENSE) does not apply to files inside the /lib folder.
