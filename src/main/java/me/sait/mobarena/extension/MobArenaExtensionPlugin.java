@@ -6,7 +6,7 @@ import me.sait.mobarena.extension.extensions.ExtensionManager;
 import me.sait.mobarena.extension.extensions.internal.discordsrv.DiscordSRVExtension;
 import me.sait.mobarena.extension.extensions.internal.mythicmob.MythicMobsExtension;
 import me.sait.mobarena.extension.extensions.internal.placeholderapi.PlaceholderExtension;
-import me.sait.mobarena.extension.extensions.macommands.CommandsExtension;
+import me.sait.mobarena.extension.extensions.internal.macommands.CommandsExtension;
 import me.sait.mobarena.extension.log.LogHelper;
 import me.sait.mobarena.extension.services.MetricsService;
 import me.sait.mobarena.extension.utils.CommonUtils;

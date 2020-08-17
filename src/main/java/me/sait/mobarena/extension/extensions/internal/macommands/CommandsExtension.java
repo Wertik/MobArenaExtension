@@ -1,4 +1,4 @@
-package me.sait.mobarena.extension.extensions.macommands;
+package me.sait.mobarena.extension.extensions.internal.macommands;
 
 import com.garbagemule.MobArena.events.*;
 import me.sait.mobarena.extension.extensions.Extension;
