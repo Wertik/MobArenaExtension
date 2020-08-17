@@ -35,59 +35,53 @@ public class MobArenaExpansion extends PlaceholderExpansion {
         return plugin.getDescription().getVersion();
     }
 
-    //TODO recode
     @Override
-    public String onPlaceholderRequest(Player player, @NotNull String param) {
+    public String onPlaceholderRequest(Player player, @NotNull String params) {
 
-        if (param.equalsIgnoreCase("total_enabled")) {
+        if (params.equalsIgnoreCase("total_enabled")) {
             return String.valueOf(mobArena.getArenaMaster().getEnabledArenas().size());
         }
 
-        //player specific
         if (player == null) return "";
 
         Arena arena = mobArena.getArenaMaster().getArenaWithPlayer(player);
         if (arena == null) {
-            mobArena.getArenaMaster().getArenaWithSpectator(player);
-        }
+            arena = mobArena.getArenaMaster().getArenaWithSpectator(player);
 
-        if (param.toLowerCase().startsWith("arena")) {
             if (arena == null) return "";
-
-            if (param.equalsIgnoreCase("arena") || param.equalsIgnoreCase("arena_name")) {
-                return arena.getSettings().getName();
-
-            } else if (param.equalsIgnoreCase("arena_prefix")) {
-                String prefix = arena.getSettings().getString("prefix", "");
-                if (prefix == null) return "";
-                return prefix;
-            } else if (param.equalsIgnoreCase("arena_wave")) {
-                return String.valueOf(arena.getWaveManager().getWaveNumber());
-
-            } else if (param.equalsIgnoreCase("arena_final_wave")) {
-                if (arena.getWaveManager().getFinalWave() > 0) {
-                    return String.valueOf(arena.getWaveManager().getFinalWave());
-                } else {
-                    return "∞";
-                }
-
-            } else if (param.equalsIgnoreCase("arena_mobs")) {
-                return String.valueOf(arena.getMonsterManager().getMonsters().size());
-
-                //TODO those stats provided by core with keys were hard coded with name, might broken in the future
-            } else if (param.equalsIgnoreCase("arena_killed")) {
-                return String.valueOf(arena.getArenaPlayer(player).getStats().getInt("kills"));
-
-            } else if (param.equalsIgnoreCase("arena_damage_dealt")) {
-                return String.valueOf(arena.getArenaPlayer(player).getStats().getInt("dmgDone"));
-
-            } else if (param.equalsIgnoreCase("arena_damage_received")) {
-                return String.valueOf(arena.getArenaPlayer(player).getStats().getInt("dmgTaken"));
-            }
-        } else if (param.toLowerCase().startsWith("player")) {
-            //TOD figure out what we want here
         }
 
-        return null;
+        String[] args = params.split("_");
+
+        if (args.length == 0)
+            return "not_enough_args";
+
+        if (args[0].equalsIgnoreCase("arena")) {
+            if (args.length == 1) {
+                return arena.arenaName();
+            }
+
+            switch (args[1].toLowerCase()) {
+                case "prefix":
+                    return arena.getSettings().getString("prefix", "");
+                case "wave":
+                    if (args.length == 3)
+                        if (args[2].equalsIgnoreCase("final"))
+                            return arena.getWaveManager().getFinalWave() > 0 ? String.valueOf(arena.getWaveManager().getFinalWave()) : "∞";
+                        else break;
+                    return String.valueOf(arena.getWaveManager().getWaveNumber());
+                case "mobs":
+                    return String.valueOf(arena.getMonsterManager().getMonsters().size());
+                case "statistic":
+                    if (args.length == 3)
+                        return String.valueOf(arena.getArenaPlayer(player).getStats().getInt(args[2]));
+                case "players":
+                    if (args.length == 3 && args[2].equalsIgnoreCase("alive"))
+                        return String.valueOf(arena.getPlayerCount());
+            }
+        } /*else if (args[0].equals("player")) {
+
+        }*/
+        return "invalid_params";
     }
 }
