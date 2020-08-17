@@ -8,3 +8,7 @@ softdepend:
   - MythicMobs
   - PlaceholderAPI
   - DiscordSRV
+commands:
+  mobarenaextension:
+    aliases: [mae, arenaextension, mobarenaextensions]
+    description: Main plugin command

@@ -53,7 +53,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         extensionManager.disable();
     }
 
-    private void reload(CommandSender sender) {
+    public void reload(CommandSender sender) {
 
         long start = System.currentTimeMillis();
 
