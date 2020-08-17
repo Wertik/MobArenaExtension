@@ -1,11 +1,9 @@
 package me.sait.mobarena.extension.integration.mythicmob;
 
-import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.extension.Extension;
 import me.sait.mobarena.extension.integration.mythicmob.listeners.MobArenaListener;
 import me.sait.mobarena.extension.integration.mythicmob.listeners.MythicMobListener;
@@ -16,38 +14,41 @@ import org.bukkit.entity.Entity;
 
 import java.util.*;
 
-public class MythicMobsSupport implements Extension {
-
-    public static final String PLUGIN_NAME = "MythicMobs";
-
-    private final MobArenaExtensionPlugin extension;
-    private final MobArena mobArena;
+public class MythicMobsExtension extends Extension {
 
     private final Map<Arena, List<Entity>> cachedMythicMobs = new HashMap<>();
     private final List<MythicMob> registeredMobs = new ArrayList<>();
 
-    public MythicMobsSupport(MobArenaExtensionPlugin extension, MobArena mobArena) {
-        this.extension = extension;
-        this.mobArena = mobArena;
+    @Override
+    public String getName() {
+        return "mythicmobs";
     }
 
     @Override
-    public void initialize() {
+    public String getPluginName() {
+        return "MythicMobs";
+    }
+
+    @Override
+    public boolean onEnable() {
         registerMobs();
         registerListeners();
+
+        return true;
     }
 
     @Override
-    public void reload() {
+    public void onReload() {
+        //TODO Try to do something on reload if needed
     }
 
     @Override
-    public void disable() {
+    public void onDisable() {
     }
 
-    public void arenaSpawnMythicMob(Arena arena, Entity entity) {
+    public void spawnMythicMob(Arena arena, Entity entity) {
         if (!cachedMythicMobs.containsKey(arena) || cachedMythicMobs.get(arena) == null) {
-            cachedMythicMobs.put(arena, new ArrayList());
+            cachedMythicMobs.put(arena, new ArrayList<>());
         }
 
         cachedMythicMobs.get(arena).add(entity);
@@ -67,7 +68,7 @@ public class MythicMobsSupport implements Extension {
         return false;
     }
 
-    public Arena getInArena(Entity entity) {
+    public Arena getArena(Entity entity) {
         for (Map.Entry<Arena, List<Entity>> entry : cachedMythicMobs.entrySet()) {
             if (entry.getValue().contains(entity)) {
                 return entry.getKey();
@@ -77,25 +78,29 @@ public class MythicMobsSupport implements Extension {
     }
 
     public Arena getArenaAtLocation(Location location) {
-        return mobArena.getArenaMaster().getArenaAtLocation(location);
+        return getMobArena().getArenaMaster().getArenaAtLocation(location);
     }
 
     public void runTask(Runnable task, long delay) {
-        Bukkit.getScheduler().runTaskLater(extension, task, delay);
+        Bukkit.getScheduler().runTaskLater(getExtensionPlugin(), task, delay);
     }
 
     private void registerListeners() {
-        mobArena.getServer().getPluginManager().registerEvents(new MythicMobListener(this), extension);
-        mobArena.getServer().getPluginManager().registerEvents(new MobArenaListener(this), extension);
+        getMobArena().getServer().getPluginManager().registerEvents(new MythicMobListener(this), getExtensionPlugin());
+        getMobArena().getServer().getPluginManager().registerEvents(new MobArenaListener(this), getExtensionPlugin());
     }
 
     private void registerMobs() {
         Collection<MythicMob> mmMobs = MythicMobs.inst().getMobManager().getMobTypes();
+
         for (MythicMob mob : mmMobs) {
+
             if (MACreature.fromString(mob.getInternalName()) != null) {
                 throw new IllegalArgumentException("Can not register mythic mobs with similar name: " + mob.getInternalName());
             }
+
             new MythicMobCreature(this, mob);
+
             registeredMobs.add(mob);
             LogHelper.debug("Registered mythic mob: " + mob.getInternalName());
         }

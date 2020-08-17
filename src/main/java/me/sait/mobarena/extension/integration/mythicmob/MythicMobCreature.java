@@ -6,6 +6,7 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import me.sait.mobarena.extension.log.LogHelper;
+import me.sait.mobarena.extension.utils.CommonUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -15,64 +16,60 @@ import org.bukkit.entity.LivingEntity;
 
 public class MythicMobCreature extends MACreature {
 
-    private MythicMobsSupport mythicMobsSupport;
-    private MythicMob mythicMob;
+    private final MythicMobsExtension extensionPlugin;
+    private final MythicMob mythicMob;
 
-    private final Boolean isLivingEntity;
+    private final boolean livingEntity;
 
-    public MythicMobCreature(MythicMobsSupport mythicMobsSupport, MythicMob mythicMob) {
-        super(mythicMob.getInternalName().toLowerCase().replaceAll("[-_\\.]", ""),
-                EntityType.fromName(mythicMob.getEntityType()));
+    public MythicMobCreature(MythicMobsExtension extensionPlugin, MythicMob mythicMob) {
+        super(mythicMob.getInternalName().toLowerCase().replaceAll("[-_.]", ""),
+                CommonUtils.getEntityType(mythicMob.getEntityType()));
 
-        this.mythicMobsSupport = mythicMobsSupport;
+        this.extensionPlugin = extensionPlugin;
         this.mythicMob = mythicMob;
 
-        //TODO deprecated stuff
-        EntityType entityType = null;
-        try {
-            entityType = EntityType.fromName(mythicMob.getEntityType());
-            if (entityType == null) {
-                entityType = EntityType.valueOf(mythicMob.getEntityType().toUpperCase());
-            }
-        } catch (Exception e) {
-            //MythicMob had some weird added entity type which are diff name with original EntityType
-        }
+        EntityType entityType = CommonUtils.getEntityType(mythicMob.getEntityType());
+
         if (entityType != null) {
-            if (LivingEntity.class.isAssignableFrom(entityType.getEntityClass())) {
-                isLivingEntity = true;
+            if (entityType.isAlive()) {
+                livingEntity = true;
             } else {
-                isLivingEntity = false;
+                livingEntity = false;
                 LogHelper.warn(mythicMob.getInternalName() + " is not a living entity, currently not compatible with Mob Arena");
             }
-        } else {
-            isLivingEntity = null;
-        }
+        } else
+            livingEntity = false;
     }
 
     @Override
     public LivingEntity spawn(Arena arena, World world, Location location) {
         try {
-            Entity mMob = MythicMobs.inst().getAPIHelper().spawnMythicMob(mythicMob, location, 0);
-            if (mMob instanceof LivingEntity) {
-                mythicMobsSupport.arenaSpawnMythicMob(arena, mMob);
-                LivingEntity livingEntity = ((LivingEntity) mMob);
+            Entity mythicEntity = MythicMobs.inst().getAPIHelper().spawnMythicMob(mythicMob, location, 0);
 
-                //temp fix for MA core reset mm hp due to implementation of health-multiplier
-                double multiplier = arena.getWaveManager().getCurrent().getHealthMultiplier();
-                double maxHp = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-                mythicMobsSupport.runTask(() -> {
-                    double health = maxHp * multiplier;
-                    livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-                    livingEntity.setHealth(Math.max(1D, health));
-                }, 1);
-                return livingEntity;
-            } else {
+            if (!this.livingEntity) {
                 LogHelper.error(mythicMob.getInternalName() + " is not a living entity, cant spawn in Mob Arena");
-                mMob.remove();
+                mythicEntity.remove();
                 return null;
             }
+
+            extensionPlugin.spawnMythicMob(arena, mythicEntity);
+            LivingEntity livingEntity = ((LivingEntity) mythicEntity);
+
+            // Temp fix for MA core reset mm hp due to implementation of health-multiplier
+            double multiplier = arena.getWaveManager().getCurrent().getHealthMultiplier();
+            double maxHp = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+
+            extensionPlugin.runTask(() -> {
+                double health = maxHp * multiplier;
+
+                livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+                livingEntity.setHealth(Math.max(1D, health));
+            }, 1);
+
+            return livingEntity;
         } catch (InvalidMobTypeException e) {
-            //mythic mobs were reload but ma creatures can not be unregistered for compatible
+            // mythic mobs were reload but ma creatures can not be unregistered for compatible
+            //TODO Translate and take measures
             return null;
         }
     }

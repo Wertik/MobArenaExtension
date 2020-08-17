@@ -4,8 +4,7 @@ import com.garbagemule.MobArena.framework.Arena;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobSpawnEvent;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
-import me.sait.mobarena.extension.config.ConfigManager;
-import me.sait.mobarena.extension.integration.mythicmob.MythicMobsSupport;
+import me.sait.mobarena.extension.integration.mythicmob.MythicMobsExtension;
 import me.sait.mobarena.extension.log.LogHelper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -15,16 +14,16 @@ import org.bukkit.event.Listener;
 
 public class MythicMobListener implements Listener {
 
-    private final MythicMobsSupport mythicMobsSupport;
+    private final MythicMobsExtension extension;
 
-    public MythicMobListener(MythicMobsSupport mythicMobsSupport) {
-        this.mythicMobsSupport = mythicMobsSupport;
+    public MythicMobListener(MythicMobsExtension extension) {
+        this.extension = extension;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void mythicMobSpawn(MythicMobSpawnEvent event) {
+    public void onMythicMobSpawn(MythicMobSpawnEvent event) {
 
-        mythicMobsSupport.runTask(() -> {
+        extension.runTask(() -> {
 
             ActiveMob activeMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
 
@@ -32,7 +31,7 @@ public class MythicMobListener implements Listener {
                     ", entity: " + event.getMobType().getEntityType());
 
             // This is arena mob. no more checking need
-            if (mythicMobsSupport.isInArena(event.getEntity())) {
+            if (extension.isInArena(event.getEntity())) {
                 return;
             }
 
@@ -42,30 +41,34 @@ public class MythicMobListener implements Listener {
             }
 
             if (activeMob.getParent() != null) {
+
                 Entity parent = activeMob.getParent().getEntity().getBukkitEntity();
-                ActiveMob parentMM = MythicMobs.inst().getAPIHelper().getMythicMobInstance(parent);
-                if (parentMM != null) {
-                    LogHelper.debug(event.getMobType().getInternalName() + " spawned via skill Summon by " + parentMM.getType().getInternalName());
+                ActiveMob mythicParent = MythicMobs.inst().getAPIHelper().getMythicMobInstance(parent);
+
+                if (mythicParent != null) {
+                    LogHelper.debug(event.getMobType().getInternalName() + " spawned via skill Summon by " + mythicParent.getType().getInternalName());
                 }
-                if (mythicMobsSupport.isInArena(parent)) {
+
+                if (extension.isInArena(parent)) {
                     LogHelper.debug(event.getMobType().getInternalName() + " was spawn by another mythic mob inside mob arena");
-                    Arena arena = mythicMobsSupport.getInArena(parent);
+                    Arena arena = extension.getArena(parent);
+
                     if (event.getEntity() instanceof LivingEntity) {
                         arena.getMonsterManager().addMonster((LivingEntity) event.getEntity());
                     } else {
                         LogHelper.error(event.getMobType().getInternalName() + " is not a living entity, currently not compatible with Mob Arena");
                     }
-                    mythicMobsSupport.arenaSpawnMythicMob(arena, event.getEntity());
+
+                    extension.spawnMythicMob(arena, event.getEntity());
                     return;
                 }
             }
 
-            if (mythicMobsSupport.getArenaAtLocation(event.getLocation()) != null) {
-                LogHelper.debug("A non-arena mythic mob spawned inside arena: " +
-                        event.getMobType().getInternalName());
-                if (ConfigManager.isBlockNonArenaMythicMob()) {
+            if (extension.getArenaAtLocation(event.getLocation()) != null) {
+                LogHelper.debug("A non-arena mythic mob spawned inside arena: " + event.getMobType().getInternalName());
 
-                    //cant cancel event since we run this on later tick
+                if (extension.getConfig().getBoolean("block-non-arena-mythic-mob", false)) {
+                    // Cant cancel event since we run this on later tick
                     event.getEntity().remove();
                 }
             }

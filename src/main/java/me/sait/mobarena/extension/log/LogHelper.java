@@ -1,7 +1,6 @@
 package me.sait.mobarena.extension.log;
 
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
-import me.sait.mobarena.extension.config.ConfigManager;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 
@@ -47,10 +46,10 @@ public class LogHelper {
 
         if (level == null) level = defaultLevel;
 
-        int levelSetting = ConfigManager.isInitialized() ? ConfigManager.getLogLevel() : defaultLevel.ordinal();
+        int levelSetting = MobArenaExtensionPlugin.getInstance().getConfig().getInt("log-level", defaultLevel.ordinal());
 
-        if (levelSetting > LogLevel.getLowestPriority().ordinal()) {
-            levelSetting = LogLevel.getLowestPriority().ordinal();
+        if (levelSetting > LogLevel.lowest().ordinal()) {
+            levelSetting = LogLevel.lowest().ordinal();
         }
 
         if (level.ordinal() < levelSetting) {
@@ -67,7 +66,7 @@ public class LogHelper {
     }
 
     private static Logger getLog() {
-        MobArenaExtensionPlugin extension = MobArenaExtensionPlugin.getPlugin();
+        MobArenaExtensionPlugin extension = MobArenaExtensionPlugin.getInstance();
         return extension != null ? extension.getLogger() : Bukkit.getLogger();
     }
 }

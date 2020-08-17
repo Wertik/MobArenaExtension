@@ -1,15 +1,11 @@
 package me.sait.mobarena.extension;
 
 import com.garbagemule.MobArena.MobArena;
-import me.sait.mobarena.extension.config.ConfigManager;
-import me.sait.mobarena.extension.config.Constants;
-import me.sait.mobarena.extension.integration.discordsrv.DiscordSrvSupport;
-import me.sait.mobarena.extension.integration.mythicmob.MythicMobsSupport;
-import me.sait.mobarena.extension.integration.placeholderapi.MobArenaExpansion;
-import me.sait.mobarena.extension.log.LogHelper;
-import me.sait.mobarena.extension.log.LogLevel;
-import me.sait.mobarena.extension.services.MetricsService;
 import me.sait.mobarena.extension.extension.ExtensionManager;
+import me.sait.mobarena.extension.integration.mythicmob.MythicMobsExtension;
+import me.sait.mobarena.extension.integration.placeholderapi.PlaceholderExtension;
+import me.sait.mobarena.extension.log.LogHelper;
+import me.sait.mobarena.extension.services.MetricsService;
 import me.sait.mobarena.extension.utils.CommonUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,6 +23,8 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         return instance;
     }
 
+    private MobArena mobArena;
+
     private ExtensionManager extensionManager;
 
     private FileConfiguration configuration;
@@ -35,10 +33,15 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        setupMobArena();
+
         loadConfig();
 
         extensionManager = new ExtensionManager(this);
         extensionManager.enable();
+
+        new PlaceholderExtension().register();
+        new MythicMobsExtension().register();
 
         startMetrics();
     }
@@ -73,6 +76,17 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         LogHelper.info("Loaded config.yml");
     }
 
+    //TODO recode, enable plugin, disable features, attempt to hook on reload.
+    private void setupMobArena() {
+        MobArena mobArena = (MobArena) getServer().getPluginManager().getPlugin("MobArena");
+
+        if (mobArena == null || !mobArena.isEnabled()) {
+            throw new NullPointerException("This extension requires core plugin MobArena installed and enabled");
+        }
+
+        this.mobArena = mobArena;
+    }
+
     private void startMetrics() {
         MetricsService metricsService = new MetricsService();
         metricsService.start();
@@ -88,79 +102,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         return extensionManager;
     }
 
-    private void initMobArena() {
-        mobArena = (MobArena) getServer().getPluginManager().getPlugin(Constants.MOB_ARENA_PLUGIN_NAME);
-        if (mobArena == null || !mobArena.isEnabled()) {
-            throw new NullPointerException("This extension requires core plugin MobArena installed and enabled");
-        }
-    }
-
-    private void initMythicMob() {
-        if (configManager.isMythicMobEnabled()) {
-            LogHelper.log("Init mythic mob", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(MythicMobsSupport.PLUGIN_NAME)) {
-                LogHelper.log(
-                        "MythicMobs plugin can not be found. Install it or disable mythicmob extension in config",
-                        LogLevel.CRITICAL
-                );
-                getServer().getPluginManager().disablePlugin(this);
-            }
-
-            mythicMobsSupport = new MythicMobsSupport(this, mobArena);
-            mythicMobsSupport.initialize();
-            extensions.add(mythicMobsSupport);
-
-            try {
-                if (mobArena.getLastFailureCause() != null) {
-                    LogHelper.debug("Auto reload MobArena so it load mythic mobs now if have");
-                    mobArena.reload();
-                }
-            } catch (RuntimeException error) {
-            }
-        }
-    }
-
-    private void initPlaceholderAPI() {
-        if (configManager.isPlaceholderAPIEnabled()) {
-            LogHelper.log("Init placeholder api", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(MobArenaExpansion.PLUGIN_NAME)) {
-                LogHelper.log(
-                        "PlaceholderAPI plugin can not be found. Install it or disable placeholderapi extension in config",
-                        LogLevel.CRITICAL
-                );
-                getServer().getPluginManager().disablePlugin(this);
-            }
-
-            placeholderAPISupport = new MobArenaExpansion(this, mobArena);
-            placeholderAPISupport.initialize();
-            extensions.add(placeholderAPISupport);
-        }
-    }
-
-    private void initDiscordSrv() {
-        if (ConfigManager.isDiscordSrvEnabled()) {
-            LogHelper.log("Init discordsrv", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.PLUGIN_NAME)) {
-                LogHelper.log(
-                        "DiscordSRV plugin can not be found. Install it or disable discordsrv extension in config",
-                        LogLevel.CRITICAL
-                );
-                getServer().getPluginManager().disablePlugin(this);
-            }
-
-            discordSrvSupport = new DiscordSrvSupport(mobArena);
-            discordSrvSupport.initialize();
-            extensions.add(discordSrvSupport);
-        }
-    }
-
-    private void disableDiscordSrv() {
-        if (configManager.isDiscordSrvEnabled() &&
-                getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.PLUGIN_NAME) &&
-                discordSrvSupport != null
-        ) {
-            discordSrvSupport.disable();
-            extensions.remove(discordSrvSupport);
-        }
+    public MobArena getMobArena() {
+        return mobArena;
     }
 }

@@ -6,15 +6,15 @@ import me.sait.mobarena.extension.integration.discordsrv.DiscordSrvSupport;
 
 public class DiscordSrvListener {
 
-    private final DiscordSrvSupport discordSrvSupport;
+    private final DiscordSrvSupport extension;
 
-    public DiscordSrvListener(DiscordSrvSupport discordSrvSupport) {
-        this.discordSrvSupport = discordSrvSupport;
+    public DiscordSrvListener(DiscordSrvSupport extension) {
+        this.extension = extension;
     }
 
     @Subscribe
     public void onMinecraftMessagePreProcess(GameChatMessagePreProcessEvent event) {
-        if (!event.isCancelled() && discordSrvSupport.inIsolatedChatArena(event.getPlayer()))
+        if (!event.isCancelled() && extension.inIsolatedChatArena(event.getPlayer()))
             event.setCancelled(true);
     }
 }

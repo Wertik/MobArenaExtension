@@ -1,39 +1,42 @@
 package me.sait.mobarena.extension.integration.discordsrv;
 
-import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;
 import github.scarsz.discordsrv.DiscordSRV;
 import me.sait.mobarena.extension.extension.Extension;
 import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSrvListener;
 import org.bukkit.entity.Player;
 
-public class DiscordSrvSupport implements Extension {
+public class DiscordSrvSupport extends Extension {
 
-    public static final String PLUGIN_NAME = "DiscordSRV";
-
-    private final MobArena mobArena;
     private DiscordSrvListener discordSrvListener;
 
-    public DiscordSrvSupport(MobArena mobArena) {
-        this.mobArena = mobArena;
+    @Override
+    public String getName() {
+        return "discordsrv";
     }
 
     @Override
-    public void initialize() {
+    public String getPluginName() {
+        return "DiscordSRV";
+    }
+
+    @Override
+    public boolean onEnable() {
         registerListeners();
+        return true;
     }
 
     @Override
-    public void reload() {
+    public void onReload() {
     }
 
     @Override
-    public void disable() {
+    public void onDisable() {
         unregisterListeners();
     }
 
     public boolean inIsolatedChatArena(Player player) {
-        Arena arena = mobArena.getArenaMaster().getArenaWithPlayer(player);
+        Arena arena = getMobArena().getArenaMaster().getArenaWithPlayer(player);
         return arena != null && arena.hasIsolatedChat();
     }
 

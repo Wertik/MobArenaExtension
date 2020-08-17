@@ -1,5 +1,6 @@
 package me.sait.mobarena.extension.extension;
 
+import com.garbagemule.MobArena.MobArena;
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,10 +9,13 @@ public abstract class Extension {
 
     private final MobArenaExtensionPlugin plugin;
 
+    private final MobArena mobArena;
+
     private boolean enabled = false;
 
     public Extension() {
         this.plugin = MobArenaExtensionPlugin.getInstance();
+        this.mobArena = plugin.getMobArena();
     }
 
     public abstract String getName();
@@ -57,5 +61,13 @@ public abstract class Extension {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public MobArenaExtensionPlugin getExtensionPlugin() {
+        return plugin;
+    }
+
+    public MobArena getMobArena() {
+        return mobArena;
     }
 }

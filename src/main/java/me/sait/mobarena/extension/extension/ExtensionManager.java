@@ -48,7 +48,17 @@ public class ExtensionManager {
         return plugin.getServer().getPluginManager().getPlugin(dependencyName) != null;
     }
 
+    private boolean shouldEnable(String extensionName) {
+        return plugin.getConfig().getBoolean("extensions." + extensionName + ".enabled", false);
+    }
+
     public void reloadExtension(Extension extension) {
+
+        if (!extension.isEnabled() && shouldEnable(extension.getName())) {
+            enableExtension(extension);
+            return;
+        }
+
         try {
             if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) return;
 
@@ -68,7 +78,10 @@ public class ExtensionManager {
 
     public boolean enableExtension(Extension extension) {
 
-        if (extension.isEnabled()) return false;
+        if (extension.isEnabled() && !shouldEnable(extension.getName())) {
+            disableExtension(extension);
+            return false;
+        }
 
         try {
             if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) return false;
