@@ -14,10 +14,22 @@ extensions:
   discordsrv:
     enabled: false
   macommands:
-    enabled: true
+    enabled: false
 
     commands:
       start:
-        - 'say Hello world!'
+        - 'say Hello %arena%!'
+      player-join:
+        - 'say %player% joined %arena%'
+      player-leave:
+        - 'say %player% left %arena%'
+      player-ready:
+        - 'say %player% is ready in %arena%'
+      kill:
+        - 'say %player% kill a mob!'
+      player-death:
+        - 'say %player% died...'
+      complete:
+        - 'say %arena% finished. (survivors: %survivor_count%)'
       end:
-        - 'say Bye world!'
+        - 'say Bye %arena%...'
