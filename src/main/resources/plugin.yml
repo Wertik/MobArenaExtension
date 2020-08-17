@@ -1,6 +1,6 @@
 name: ${project.name}
 version: ${project.version}
-author: Sait
+authors: [Sait (original author), Wertik1206]
 main: me.sait.mobarena.extension.MobArenaExtensionPlugin
 depend:
   - MobArena
