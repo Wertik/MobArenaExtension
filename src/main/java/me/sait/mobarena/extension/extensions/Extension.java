@@ -45,30 +45,50 @@ public abstract class Extension {
      */
     public abstract void onDisable();
 
-    // Wrapper calls
+    /**
+     * Attempt to enable the configuration.
+     * Will fail if: MobArena is not installed, plugin specified in #getPluginName() is not installed
+     * or this extension returning false #onEnable().
+     */
     public boolean enable() {
-        this.enabled = onEnable();
+        this.enabled = plugin.getExtensionManager().enableExtension(this);
         return this.enabled;
     }
 
+    /**
+     * Reload the extension.
+     * Also reloads the configuration beforehand.
+     */
     public void reload() {
-        onReload();
+        plugin.getExtensionManager().reloadExtension(this);
     }
 
+    /**
+     * Disable the extension.
+     */
     public void disable() {
-        onDisable();
-        this.enabled = false;
+        this.enabled = !plugin.getExtensionManager().disableExtension(this);
     }
 
+    /**
+     * Register the extension and try to enable it.
+     */
     public boolean register() {
         return plugin.getExtensionManager().registerExtension(this);
+    }
+
+    /**
+     * Disable and unregister the extension.
+     */
+    public void unregister() {
+        plugin.getExtensionManager().unregisterExtension(this);
     }
 
     public FileConfiguration getConfig() {
         return plugin.getConfig();
     }
 
-    public ConfigurationSection getSection() {
+    public ConfigurationSection getConfigurationSection() {
         return ensureConfigurationSection("extensions." + getName());
     }
 

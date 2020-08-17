@@ -38,7 +38,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 break;
             case "enable":
                 if (args.length == 1) {
-                    plugin.getExtensionManager().enable();
+                    plugin.getExtensionManager().enableAll();
                     return true;
                 }
 
@@ -53,7 +53,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 break;
             case "disable":
                 if (args.length == 1) {
-                    plugin.getExtensionManager().disable();
+                    plugin.getExtensionManager().disableAll();
                     return true;
                 }
 

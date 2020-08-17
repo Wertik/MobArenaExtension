@@ -56,7 +56,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        extensionManager.disable();
+        extensionManager.disableAll();
     }
 
     public void reload(CommandSender sender) {
@@ -67,7 +67,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
 
         loadConfig();
         LogHelper.load();
-        extensionManager.reload();
+        extensionManager.reloadAll();
 
         sender.sendMessage(CommonUtils.color("&7Done... reload took &f" + (System.currentTimeMillis() - start) + "&7ms."));
     }
@@ -89,7 +89,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         this.mobArena = (MobArena) getServer().getPluginManager().getPlugin("MobArena");
 
         if (this.mobArena == null) {
-            getExtensionManager().disable();
+            getExtensionManager().disableAll();
             LogHelper.error("Mob Arena is not installed, install and reload this plugin.");
         }
     }

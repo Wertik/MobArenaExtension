@@ -18,42 +18,21 @@ public class ExtensionManager {
         this.plugin = plugin;
     }
 
-    /**
-     * Disable all registered extensions.
-     */
-    public void disable() {
-        for (Extension extension : this.registeredExtensions.values()) {
-            disableExtension(extension);
-        }
-    }
+    public boolean disableExtension(Extension extension) {
 
-    public void disableExtension(Extension extension) {
-
-        if (!extension.isEnabled()) return;
+        if (!extension.isEnabled()) return false;
 
         try {
-            extension.disable();
+            extension.onDisable();
             LogHelper.debug("Disabled " + extension.getName());
+            return true;
         } catch (Exception e) {
             LogHelper.info("Encountered an error when enabling " + extension.getName());
             LogHelper.error("Error: " + e.getMessage());
 
             LogHelper.debug(e.toString());
+            return false;
         }
-    }
-
-    public void reload() {
-        for (Extension extension : this.registeredExtensions.values()) {
-            reloadExtension(extension);
-        }
-    }
-
-    private boolean checkDependency(String dependencyName) {
-        return plugin.getServer().getPluginManager().getPlugin(dependencyName) != null;
-    }
-
-    private boolean shouldEnable(String extensionName) {
-        return plugin.getConfig().getBoolean("extensions." + extensionName + ".enabled", false);
     }
 
     public void reloadExtension(Extension extension) {
@@ -69,17 +48,17 @@ public class ExtensionManager {
             return;
         }
 
+        if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
+            LogHelper.debug("Extension " + extension.getName() + " not reloaded, dependency " + extension.getPluginName() + " not installed -- disabling.");
+            disableExtension(extension);
+            return;
+        }
+
+        // Reload the configuration
+        plugin.loadConfig();
+
         try {
-            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
-                LogHelper.debug("Extension " + extension.getName() + " not reloaded, dependency " + extension.getPluginName() + " not installed -- disabling.");
-                disableExtension(extension);
-                return;
-            }
-
-            // Reload the configuration
-            plugin.loadConfig();
-
-            extension.reload();
+            extension.onReload();
             LogHelper.debug("Reloaded extension " + extension.getName());
         } catch (Exception e) {
             LogHelper.info("Encountered an error when enabling " + extension.getName() + ", trying to disable.");
@@ -88,12 +67,6 @@ public class ExtensionManager {
             LogHelper.debug(e.toString());
 
             disableExtension(extension);
-        }
-    }
-
-    public void enable() {
-        for (Extension extension : this.registeredExtensions.values()) {
-            enableExtension(extension);
         }
     }
 
@@ -111,13 +84,13 @@ public class ExtensionManager {
             return false;
         }
 
-        try {
-            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
-                LogHelper.debug("Extension " + extension.getName() + " was not enabled, dependency not installed.");
-                return false;
-            }
+        if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
+            LogHelper.debug("Extension " + extension.getName() + " was not enabled, dependency not installed.");
+            return false;
+        }
 
-            boolean result = extension.enable();
+        try {
+            boolean result = extension.onEnable();
             if (result)
                 LogHelper.debug("Enabled extension " + extension.getName());
             else
@@ -152,14 +125,6 @@ public class ExtensionManager {
         return enableExtension(extension);
     }
 
-    public boolean isRegistered(String extensionName) {
-        return this.registeredExtensions.containsKey(extensionName);
-    }
-
-    public Extension getExtension(String extensionName) {
-        return this.registeredExtensions.getOrDefault(extensionName, null);
-    }
-
     /**
      * Unregister an extension.
      */
@@ -174,6 +139,43 @@ public class ExtensionManager {
 
         this.registeredExtensions.remove(extension.getName());
         LogHelper.debug("Unregistered extension " + extension.getName());
+    }
+
+    public void enableAll() {
+        for (Extension extension : this.registeredExtensions.values()) {
+            enableExtension(extension);
+        }
+    }
+
+    public void reloadAll() {
+        for (Extension extension : this.registeredExtensions.values()) {
+            reloadExtension(extension);
+        }
+    }
+
+    /**
+     * Disable all registered extensions.
+     */
+    public void disableAll() {
+        for (Extension extension : this.registeredExtensions.values()) {
+            disableExtension(extension);
+        }
+    }
+
+    private boolean checkDependency(String dependencyName) {
+        return plugin.getServer().getPluginManager().getPlugin(dependencyName) != null;
+    }
+
+    private boolean shouldEnable(String extensionName) {
+        return plugin.getConfig().getBoolean("extensions." + extensionName + ".enabled", false);
+    }
+
+    public boolean isRegistered(String extensionName) {
+        return this.registeredExtensions.containsKey(extensionName);
+    }
+
+    public Extension getExtension(String extensionName) {
+        return this.registeredExtensions.getOrDefault(extensionName, null);
     }
 
     public Set<Extension> getExtensions() {

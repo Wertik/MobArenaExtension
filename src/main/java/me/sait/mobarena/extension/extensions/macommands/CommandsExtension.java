@@ -104,13 +104,13 @@ public class CommandsExtension extends Extension {
     private void registerListeners() {
         for (Map.Entry<String, Listener> entry : commandListeners.entrySet()) {
             getExtensionPlugin().getServer().getPluginManager().registerEvents(entry.getValue(), getExtensionPlugin());
-            commandActions.put(entry.getKey(), getSection().getStringList("commands." + entry.getKey()));
+            commandActions.put(entry.getKey(), getConfigurationSection().getStringList("commands." + entry.getKey()));
         }
     }
 
     private void loadCommands() {
         for (String action : commandListeners.keySet())
-            commandActions.put(action, getSection().getStringList("commands." + action));
+            commandActions.put(action, getConfigurationSection().getStringList("commands." + action));
     }
 
     @Override
