@@ -17,7 +17,7 @@ Mythic mobs can be spawned in arena by using their internal MythicMobs name in M
 
 Key | description
 ------------|-------------
-%mobarena_total_enabled% | amount of arenas is enabled
+%mobarena_total_enabled% | amount of arenas enabled
 %mobarena_arena_name% | name of arena that player is in
 %mobarena_arena_wave% | current wave number of the arena
 %mobarena_arena_wave_final% | the final wave number of the arena 
