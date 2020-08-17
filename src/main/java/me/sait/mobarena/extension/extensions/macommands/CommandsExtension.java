@@ -2,6 +2,8 @@ package me.sait.mobarena.extension.extensions.macommands;
 
 import com.garbagemule.MobArena.events.*;
 import me.sait.mobarena.extension.extensions.Extension;
+import me.sait.mobarena.extension.utils.CommonUtils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -44,7 +46,7 @@ public class CommandsExtension extends Extension {
             public void onKill(ArenaKillEvent event) {
                 runCommands("kill", str -> createParser(str, "arena", event.getArena().arenaName())
                         .parse("player", event.getPlayer().getName())
-                        .toString());
+                        .toString(event.getPlayer()));
             }
         });
 
@@ -53,7 +55,7 @@ public class CommandsExtension extends Extension {
             public void onDeath(ArenaPlayerDeathEvent event) {
                 runCommands("player-death", str -> createParser(str, "arena", event.getArena().arenaName())
                         .parse("player", event.getPlayer().getName())
-                        .toString());
+                        .toString(event.getPlayer()));
             }
         });
 
@@ -62,7 +64,7 @@ public class CommandsExtension extends Extension {
             public void onJoin(ArenaPlayerJoinEvent event) {
                 runCommands("player-join", str -> createParser(str, "arena", event.getArena().arenaName())
                         .parse("player", event.getPlayer().getName())
-                        .toString());
+                        .toString(event.getPlayer()));
             }
         });
 
@@ -71,7 +73,7 @@ public class CommandsExtension extends Extension {
             public void onReady(ArenaPlayerReadyEvent event) {
                 runCommands("player-ready", str -> createParser(str, "arena", event.getArena().arenaName())
                         .parse("player", event.getPlayer().getName())
-                        .toString());
+                        .toString(event.getPlayer()));
             }
         });
 
@@ -80,7 +82,7 @@ public class CommandsExtension extends Extension {
             public void onLeave(ArenaPlayerLeaveEvent event) {
                 runCommands("player-leave", str -> createParser(str, "arena", event.getArena().arenaName())
                         .parse("player", event.getPlayer().getName())
-                        .toString());
+                        .toString(event.getPlayer()));
             }
         });
     }
@@ -122,7 +124,7 @@ public class CommandsExtension extends Extension {
     public void onDisable() {
     }
 
-    public class StringParser {
+    public static class StringParser {
         private String parsedString;
 
         public StringParser(String str) {
@@ -136,6 +138,10 @@ public class CommandsExtension extends Extension {
 
         public String toString() {
             return parsedString;
+        }
+
+        public String toString(Player player) {
+            return CommonUtils.parsePlaceholderAPI(parsedString, player);
         }
     }
 
