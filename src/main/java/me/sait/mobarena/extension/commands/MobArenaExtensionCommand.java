@@ -25,6 +25,17 @@ public class MobArenaExtensionCommand implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
+            case "list":
+                StringBuilder msg = new StringBuilder("&7Registered extensions: ");
+                int n = 0;
+                for (Extension extension : plugin.getExtensionManager().getExtensions()) {
+                    msg.append(extension.isEnabled() ? "&a" : "&c");
+                    if (n < plugin.getExtensionManager().getExtensions().size())
+                        msg.append(extension.getName()).append(", ");
+                    n++;
+                }
+                sender.sendMessage(CommonUtils.color(msg.toString()));
+                break;
             case "enable":
                 if (args.length == 1) {
                     plugin.getExtensionManager().enable();
