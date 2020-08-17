@@ -34,7 +34,10 @@ public class ExtensionManager {
         try {
             extension.disable();
         } catch (Exception e) {
-            LogHelper.log(e.getMessage());
+            LogHelper.info("Encountered an error when enabling " + extension.getName());
+            LogHelper.error("Error: " + e.getMessage());
+
+            LogHelper.debug(e.toString());
         }
     }
 
@@ -60,11 +63,19 @@ public class ExtensionManager {
         }
 
         try {
-            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) return;
+            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
+                LogHelper.debug("Extension " + extension.getName() + " was not reloaded, dependency not installed -- disabling.");
+                disableExtension(extension);
+                return;
+            }
 
             extension.reload();
+            LogHelper.debug("Reloaded extension " + extension.getName());
         } catch (Exception e) {
-            LogHelper.log(e.getMessage());
+            LogHelper.info("Encountered an error when enabling " + extension.getName() + ", trying to disable.");
+            LogHelper.error("Error: " + e.getMessage());
+
+            LogHelper.debug(e.toString());
 
             disableExtension(extension);
         }
@@ -78,17 +89,28 @@ public class ExtensionManager {
 
     public boolean enableExtension(Extension extension) {
 
-        if (extension.isEnabled() && !shouldEnable(extension.getName())) {
+        if (extension.isEnabled() || !shouldEnable(extension.getName())) {
             disableExtension(extension);
             return false;
         }
 
         try {
-            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) return false;
+            if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
+                LogHelper.debug("Extension " + extension.getName() + " was not enabled, dependency not installed.");
+                return false;
+            }
 
-            return extension.enable();
+            boolean result = extension.enable();
+            if (result)
+                LogHelper.debug("Enabled extension " + extension.getName());
+            else
+                LogHelper.debug("Could not enable extension " + extension.getName() + ", extension refused.");
+            return result;
         } catch (Exception e) {
-            LogHelper.log(e.getMessage());
+            LogHelper.info("Encountered an error when enabling " + extension.getName() + ", trying to disable.");
+            LogHelper.error("Error: " + e.getMessage());
+
+            LogHelper.debug(e.toString());
 
             disableExtension(extension);
             return false;
@@ -96,12 +118,25 @@ public class ExtensionManager {
     }
 
     /**
-     * Register an extension.
+     * Register an extension and try to enable it.
      */
     public boolean registerExtension(Extension extension) {
-        if (extension == null) return false;
+        if (extension == null)
+            return false;
+
+        if (isRegistered(extension.getName())) {
+            LogHelper.debug("Could not register " + extension.getName() + ", already registered.");
+            return false;
+        }
+
+        this.registeredExtensions.put(extension.getName(), extension);
+        LogHelper.debug("Registered extension " + extension.getName());
 
         return enableExtension(extension);
+    }
+
+    public boolean isRegistered(String extensionName) {
+        return this.registeredExtensions.containsKey(extensionName);
     }
 
     public Extension getExtension(String extensionName) {
@@ -121,6 +156,7 @@ public class ExtensionManager {
         disableExtension(extension);
 
         this.registeredExtensions.remove(extension.getName());
+        LogHelper.debug("Unregistered extension " + extension.getName());
     }
 
     public Set<Extension> getExtensions() {
