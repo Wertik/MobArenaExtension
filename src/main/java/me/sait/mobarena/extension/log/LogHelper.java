@@ -13,7 +13,7 @@ public class LogHelper {
     public static int currentLevel = defaultLevel.ordinal();
 
     public static void load() {
-        currentLevel = Math.max(MobArenaExtensionPlugin.getInstance().getConfig().getInt("log-level", defaultLevel.ordinal()), LogLevel.lowest().ordinal());
+        currentLevel = Math.max(Math.min(MobArenaExtensionPlugin.getInstance().getConfig().getInt("log-level", LogLevel.CRITICAL.ordinal()), LogLevel.lowest().ordinal()), LogLevel.DEBUG.ordinal());
     }
 
     public static void debug(String message) {
