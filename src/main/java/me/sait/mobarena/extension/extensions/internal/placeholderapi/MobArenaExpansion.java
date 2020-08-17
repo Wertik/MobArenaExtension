@@ -1,4 +1,4 @@
-package me.sait.mobarena.extension.integration.placeholderapi;
+package me.sait.mobarena.extension.extensions.internal.placeholderapi;
 
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;

@@ -1,12 +1,12 @@
-package me.sait.mobarena.extension.integration.mythicmob;
+package me.sait.mobarena.extension.extensions.internal.mythicmob;
 
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-import me.sait.mobarena.extension.extension.Extension;
-import me.sait.mobarena.extension.integration.mythicmob.listeners.MobArenaListener;
-import me.sait.mobarena.extension.integration.mythicmob.listeners.MythicMobListener;
+import me.sait.mobarena.extension.extensions.Extension;
+import me.sait.mobarena.extension.extensions.internal.mythicmob.listeners.MobArenaListener;
+import me.sait.mobarena.extension.extensions.internal.mythicmob.listeners.MythicMobListener;
 import me.sait.mobarena.extension.log.LogHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

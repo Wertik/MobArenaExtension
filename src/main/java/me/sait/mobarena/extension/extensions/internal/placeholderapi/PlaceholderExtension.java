@@ -1,8 +1,8 @@
-package me.sait.mobarena.extension.integration.placeholderapi;
+package me.sait.mobarena.extension.extensions.internal.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
-import me.sait.mobarena.extension.extension.Extension;
+import me.sait.mobarena.extension.extensions.Extension;
 
 public class PlaceholderExtension extends Extension {
 

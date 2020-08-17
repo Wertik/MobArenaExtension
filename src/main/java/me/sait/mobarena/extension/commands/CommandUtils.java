@@ -1,7 +1,7 @@
 package me.sait.mobarena.extension.commands;
 
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
-import me.sait.mobarena.extension.extension.Extension;
+import me.sait.mobarena.extension.extensions.Extension;
 import me.sait.mobarena.extension.utils.CommonUtils;
 import org.bukkit.command.CommandSender;
 

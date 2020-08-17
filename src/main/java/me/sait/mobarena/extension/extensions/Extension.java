@@ -1,4 +1,4 @@
-package me.sait.mobarena.extension.extension;
+package me.sait.mobarena.extension.extensions;
 
 import com.garbagemule.MobArena.MobArena;
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;

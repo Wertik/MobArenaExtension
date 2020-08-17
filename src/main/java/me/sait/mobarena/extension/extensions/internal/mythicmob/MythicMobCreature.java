@@ -1,4 +1,4 @@
-package me.sait.mobarena.extension.integration.mythicmob;
+package me.sait.mobarena.extension.extensions.internal.mythicmob;
 
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.waves.MACreature;

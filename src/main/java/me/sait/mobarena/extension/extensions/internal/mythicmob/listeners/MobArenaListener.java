@@ -1,7 +1,7 @@
-package me.sait.mobarena.extension.integration.mythicmob.listeners;
+package me.sait.mobarena.extension.extensions.internal.mythicmob.listeners;
 
 import com.garbagemule.MobArena.events.ArenaEndEvent;
-import me.sait.mobarena.extension.integration.mythicmob.MythicMobsExtension;
+import me.sait.mobarena.extension.extensions.internal.mythicmob.MythicMobsExtension;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

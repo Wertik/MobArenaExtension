@@ -1,4 +1,4 @@
-package me.sait.mobarena.extension.extension;
+package me.sait.mobarena.extension.extensions;
 
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.log.LogHelper;

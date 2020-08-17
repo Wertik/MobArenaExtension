@@ -1,9 +1,9 @@
-package me.sait.mobarena.extension.integration.discordsrv;
+package me.sait.mobarena.extension.extensions.internal.discordsrv;
 
 import com.garbagemule.MobArena.framework.Arena;
 import github.scarsz.discordsrv.DiscordSRV;
-import me.sait.mobarena.extension.extension.Extension;
-import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSRVListener;
+import me.sait.mobarena.extension.extensions.Extension;
+import me.sait.mobarena.extension.extensions.internal.discordsrv.listeners.DiscordSRVListener;
 import org.bukkit.entity.Player;
 
 public class DiscordSRVExtension extends Extension {

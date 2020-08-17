@@ -2,10 +2,10 @@ package me.sait.mobarena.extension;
 
 import com.garbagemule.MobArena.MobArena;
 import me.sait.mobarena.extension.commands.MobArenaExtensionCommand;
-import me.sait.mobarena.extension.extension.ExtensionManager;
-import me.sait.mobarena.extension.integration.discordsrv.DiscordSRVExtension;
-import me.sait.mobarena.extension.integration.mythicmob.MythicMobsExtension;
-import me.sait.mobarena.extension.integration.placeholderapi.PlaceholderExtension;
+import me.sait.mobarena.extension.extensions.ExtensionManager;
+import me.sait.mobarena.extension.extensions.internal.discordsrv.DiscordSRVExtension;
+import me.sait.mobarena.extension.extensions.internal.mythicmob.MythicMobsExtension;
+import me.sait.mobarena.extension.extensions.internal.placeholderapi.PlaceholderExtension;
 import me.sait.mobarena.extension.log.LogHelper;
 import me.sait.mobarena.extension.services.MetricsService;
 import me.sait.mobarena.extension.utils.CommonUtils;

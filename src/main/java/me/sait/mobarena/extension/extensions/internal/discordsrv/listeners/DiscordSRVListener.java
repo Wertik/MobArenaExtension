@@ -1,8 +1,8 @@
-package me.sait.mobarena.extension.integration.discordsrv.listeners;
+package me.sait.mobarena.extension.extensions.internal.discordsrv.listeners;
 
 import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.GameChatMessagePreProcessEvent;
-import me.sait.mobarena.extension.integration.discordsrv.DiscordSRVExtension;
+import me.sait.mobarena.extension.extensions.internal.discordsrv.DiscordSRVExtension;
 
 public class DiscordSRVListener {
 
