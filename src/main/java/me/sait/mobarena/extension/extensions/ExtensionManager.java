@@ -76,6 +76,9 @@ public class ExtensionManager {
                 return;
             }
 
+            // Reload the configuration
+            plugin.loadConfig();
+
             extension.reload();
             LogHelper.debug("Reloaded extension " + extension.getName());
         } catch (Exception e) {
