@@ -18,14 +18,31 @@ public abstract class Extension {
         this.mobArena = plugin.getMobArena();
     }
 
+    /**
+     * Get the name of the extension.
+     */
     public abstract String getName();
 
+    /**
+     * Name of a required plugin. ExtensionManager checks if it's enabled automatically.
+     *
+     * @return name of a required plugin, return null to disable the check.
+     */
     public abstract String getPluginName();
 
+    /**
+     * Called when the extension is enabled.
+     */
     public abstract boolean onEnable();
 
+    /**
+     * Called when the extension is reloaded.
+     */
     public abstract void onReload();
 
+    /**
+     * Called when the extension is disabled.
+     */
     public abstract void onDisable();
 
     // Wrapper calls
