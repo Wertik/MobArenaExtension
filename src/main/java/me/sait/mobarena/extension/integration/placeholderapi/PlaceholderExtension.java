@@ -26,7 +26,6 @@ public class PlaceholderExtension extends Extension {
 
     @Override
     public void onReload() {
-        //TODO Disable and unregister if it gets disabled in the config?
     }
 
     @Override

@@ -40,7 +40,6 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         loadConfig();
 
         extensionManager = new ExtensionManager(this);
-        extensionManager.enable();
 
         new PlaceholderExtension().register();
         new MythicMobsExtension().register();
@@ -59,6 +58,8 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
     public void reload(CommandSender sender) {
 
         long start = System.currentTimeMillis();
+
+        setupMobArena();
 
         loadConfig();
         extensionManager.reload();
@@ -81,15 +82,12 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         LogHelper.info("Loaded config.yml");
     }
 
-    //TODO recode, enable plugin, disable features, attempt to hook on reload.
     private void setupMobArena() {
-        MobArena mobArena = (MobArena) getServer().getPluginManager().getPlugin("MobArena");
+        this.mobArena = (MobArena) getServer().getPluginManager().getPlugin("MobArena");
 
-        if (mobArena == null || !mobArena.isEnabled()) {
-            throw new NullPointerException("This extension requires core plugin MobArena installed and enabled");
-        }
-
-        this.mobArena = mobArena;
+        if (this.mobArena == null || !mobArena.isEnabled())
+            getExtensionManager().disable();
+            LogHelper.error("Mob Arena is not installed, install and reload this plugin.");
     }
 
     private void startMetrics() {

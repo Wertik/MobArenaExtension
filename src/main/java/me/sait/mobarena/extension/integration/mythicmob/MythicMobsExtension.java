@@ -39,7 +39,6 @@ public class MythicMobsExtension extends Extension {
 
     @Override
     public void onReload() {
-        //TODO Try to do something on reload if needed
     }
 
     @Override

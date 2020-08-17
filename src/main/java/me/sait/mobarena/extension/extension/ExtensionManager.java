@@ -57,6 +57,12 @@ public class ExtensionManager {
 
     public void reloadExtension(Extension extension) {
 
+        if (plugin.getMobArena() == null) {
+            LogHelper.debug("Could not reload extension " + extension.getName() + ", Mob Arena not installed -- disabling.");
+            disableExtension(extension);
+            return;
+        }
+
         if (!extension.isEnabled() && shouldEnable(extension.getName())) {
             enableExtension(extension);
             return;
@@ -64,7 +70,7 @@ public class ExtensionManager {
 
         try {
             if (extension.getPluginName() != null && !checkDependency(extension.getPluginName())) {
-                LogHelper.debug("Extension " + extension.getName() + " was not reloaded, dependency not installed -- disabling.");
+                LogHelper.debug("Extension " + extension.getName() + " not reloaded, dependency " + extension.getPluginName() + " not installed -- disabling.");
                 disableExtension(extension);
                 return;
             }
@@ -88,6 +94,12 @@ public class ExtensionManager {
     }
 
     public boolean enableExtension(Extension extension) {
+
+        if (plugin.getMobArena() == null) {
+            LogHelper.debug("Could not reload extension " + extension.getName() + ", Mob Arena not installed -- disabling.");
+            disableExtension(extension);
+            return false;
+        }
 
         if (extension.isEnabled() || !shouldEnable(extension.getName())) {
             disableExtension(extension);

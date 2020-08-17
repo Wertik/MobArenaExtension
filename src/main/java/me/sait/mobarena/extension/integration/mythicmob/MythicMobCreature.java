@@ -68,8 +68,6 @@ public class MythicMobCreature extends MACreature {
 
             return livingEntity;
         } catch (InvalidMobTypeException e) {
-            // mythic mobs were reload but ma creatures can not be unregistered for compatible
-            //TODO Translate and take measures
             return null;
         }
     }
