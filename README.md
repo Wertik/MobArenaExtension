@@ -7,7 +7,7 @@ Extend the functionality of Mob Arena by using pre-coded extensions, or code one
 * Install the plugin (into your /plugins/ folder of course)
 * Enable wanted extension in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
-## Supported Plugins
+## Extensions
 
 ### MythicMobs
 
@@ -35,8 +35,6 @@ Available statistics:
 ### DiscordSRV
 
 If in chat isolated arena, messages wont be sent to discord.
-
-## Other extensions
 
 ### Commands
 
