@@ -10,6 +10,12 @@ public class LogHelper {
 
     public static LogLevel defaultLevel = LogLevel.USEFUL;
 
+    public static int currentLevel = defaultLevel.ordinal();
+
+    public static void load() {
+        currentLevel = Math.max(MobArenaExtensionPlugin.getInstance().getConfig().getInt("log-level", defaultLevel.ordinal()), LogLevel.lowest().ordinal());
+    }
+
     public static void debug(String message) {
         log(message, LogLevel.DEBUG);
     }
@@ -46,13 +52,7 @@ public class LogHelper {
 
         if (level == null) level = defaultLevel;
 
-        int levelSetting = MobArenaExtensionPlugin.getInstance().getConfig().getInt("log-level", defaultLevel.ordinal());
-
-        if (levelSetting > LogLevel.lowest().ordinal()) {
-            levelSetting = LogLevel.lowest().ordinal();
-        }
-
-        if (level.ordinal() < levelSetting) {
+        if (level.ordinal() < currentLevel) {
             return;
         }
 

@@ -35,6 +35,8 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        LogHelper.load();
+
         setupMobArena();
 
         loadConfig();
@@ -87,7 +89,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
 
         if (this.mobArena == null || !mobArena.isEnabled())
             getExtensionManager().disable();
-            LogHelper.error("Mob Arena is not installed, install and reload this plugin.");
+        LogHelper.error("Mob Arena is not installed, install and reload this plugin.");
     }
 
     private void startMetrics() {
