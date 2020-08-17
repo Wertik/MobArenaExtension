@@ -35,11 +35,11 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        loadConfig();
+
         LogHelper.load();
 
         setupMobArena();
-
-        loadConfig();
 
         extensionManager = new ExtensionManager(this);
 
@@ -75,13 +75,11 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         if (!file.exists()) {
             try {
                 saveResource("config.yml", false);
-            } catch (IllegalArgumentException e) {
-                LogHelper.error("Could not save config.yml");
+            } catch (IllegalArgumentException ignored) {
             }
         }
 
         this.configuration = YamlConfiguration.loadConfiguration(file);
-        LogHelper.info("Loaded config.yml");
     }
 
     private void setupMobArena() {
