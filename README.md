@@ -11,7 +11,7 @@ Extend the functionality of Mob Arena by using pre-coded extensions, or code one
 
 ### MythicMobs
 
-Mythic mobs can be spawned in arena by using their internal MythicMobs name in MobArena/[waves.yml](https://github.com/garbagemule/MobArena/blob/master/src/main/resources/res/waves.yml) monsters section.
+Mythic mobs can be spawned in arena by using their name instead of entity types in MobArena/[waves.yml](https://github.com/garbagemule/MobArena/blob/master/src/main/resources/res/waves.yml)
 
 ### PlaceholderAPI
 
