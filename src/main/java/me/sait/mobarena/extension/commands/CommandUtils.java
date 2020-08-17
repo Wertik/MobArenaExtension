@@ -2,6 +2,7 @@ package me.sait.mobarena.extension.commands;
 
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.extension.Extension;
+import me.sait.mobarena.extension.utils.CommonUtils;
 import org.bukkit.command.CommandSender;
 
 public class CommandUtils {
@@ -10,7 +11,7 @@ public class CommandUtils {
         Extension extension = MobArenaExtensionPlugin.getInstance().getExtensionManager().getExtension(extensionName);
 
         if (extension == null) {
-            //TODO err msg
+            sender.sendMessage(CommonUtils.color("&cExtension name &f" + extensionName + "&c is not valid."));
             return null;
         }
 
@@ -18,11 +19,11 @@ public class CommandUtils {
     }
 
     public static void sendHelp(CommandSender sender, String label) {
-        sender.sendMessage("&8&m    &c Mob Arena Extensions &8&m    " +
+        sender.sendMessage(CommonUtils.color("&8&m    &c Mob Arena Extensions &8&m    " +
                 "\n&c/%label% &8- &7Displays this." +
                 "\n&c/%label% reload (extension) &8- &7Reload an extension, or all." +
                 "\n&c/%label% enable (extension) &8- &7Enable an extension, or all." +
                 "\n&c/%label% disable (extension) &8- &7Disable an extension, or all."
-                        .replace("%label%", label));
+                        .replace("%label%", label)));
     }
 }

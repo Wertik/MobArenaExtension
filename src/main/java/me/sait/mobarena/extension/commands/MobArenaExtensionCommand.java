@@ -2,6 +2,7 @@ package me.sait.mobarena.extension.commands;
 
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import me.sait.mobarena.extension.extension.Extension;
+import me.sait.mobarena.extension.utils.CommonUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (args.length == 0) {
-            //TODO help
+            CommandUtils.sendHelp(sender, label);
             return true;
         }
 
@@ -35,7 +36,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 if (extension == null) return true;
 
                 plugin.getExtensionManager().enableExtension(extension);
-                sender.sendMessage("&7Enabled extension &f" + extension.getName());
+                sender.sendMessage(CommonUtils.color("&7Enabled extension &f" + extension.getName()));
                 break;
             case "disable":
                 if (args.length == 1) {
@@ -48,7 +49,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 if (extension == null) return true;
 
                 plugin.getExtensionManager().disableExtension(extension);
-                sender.sendMessage("&7Disabled extension &f" + extension.getName());
+                sender.sendMessage(CommonUtils.color("&7Disabled extension &f" + extension.getName()));
                 break;
             case "reload":
                 if (args.length == 1) {
@@ -61,8 +62,10 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 if (extension == null) return true;
 
                 plugin.getExtensionManager().reloadExtension(extension);
-                sender.sendMessage("&7Reloaded extension &f" + extension.getName());
+                sender.sendMessage(CommonUtils.color("&7Reloaded extension &f" + extension.getName()));
                 break;
+            default:
+                CommandUtils.sendHelp(sender, label);
         }
 
         return false;
