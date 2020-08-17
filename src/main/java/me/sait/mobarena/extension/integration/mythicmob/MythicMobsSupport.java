@@ -17,11 +17,14 @@ import org.bukkit.entity.Entity;
 import java.util.*;
 
 public class MythicMobsSupport implements Integration {
-    public static final String pluginName = "MythicMobs";
-    private MobArenaExtension extension;
-    private MobArena mobArena;
-    private Map<Arena, List<Entity>> cachedMythicMobs = new HashMap();
-    private List<MythicMob> registeredMobs = new ArrayList();
+
+    public static final String PLUGIN_NAME = "MythicMobs";
+
+    private final MobArenaExtension extension;
+    private final MobArena mobArena;
+
+    private final Map<Arena, List<Entity>> cachedMythicMobs = new HashMap<>();
+    private final List<MythicMob> registeredMobs = new ArrayList<>();
 
     public MythicMobsSupport(MobArenaExtension extension, MobArena mobArena) {
         this.extension = extension;
@@ -35,10 +38,12 @@ public class MythicMobsSupport implements Integration {
     }
 
     @Override
-    public void onReload() {}
+    public void onReload() {
+    }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+    }
 
     public void arenaSpawnMythicMob(Arena arena, Entity entity) {
         if (!cachedMythicMobs.containsKey(arena) || cachedMythicMobs.get(arena) == null) {
@@ -50,9 +55,7 @@ public class MythicMobsSupport implements Integration {
     }
 
     public void arenaEnd(Arena arena) {
-        if (cachedMythicMobs.containsKey(arena)) {
-            cachedMythicMobs.remove(arena);
-        }
+        cachedMythicMobs.remove(arena);
     }
 
     public boolean isInArena(Entity entity) {

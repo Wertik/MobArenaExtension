@@ -8,7 +8,8 @@ import org.bukkit.Bukkit;
 import java.util.logging.Logger;
 
 public class LogHelper {
-    public static LogLevel defaulLevel = LogLevel.USEFUL;
+
+    public static LogLevel defaultLevel = LogLevel.USEFUL;
 
     public static void debug(String message) {
         log(message, LogLevel.DEBUG);
@@ -35,7 +36,7 @@ public class LogHelper {
     }
 
     public static void log(String message) {
-        log(message, defaulLevel);
+        log(message, defaultLevel);
     }
 
     public static void log(Object obj, LogLevel level) {
@@ -43,12 +44,15 @@ public class LogHelper {
     }
 
     public static void log(String message, LogLevel level) {
-        if (level == null) level = defaulLevel;
 
-        Integer levelSetting = ConfigManager.isInitialized() ? ConfigManager.getLogLevel() : defaulLevel.ordinal();
+        if (level == null) level = defaultLevel;
+
+        int levelSetting = ConfigManager.isInitialized() ? ConfigManager.getLogLevel() : defaultLevel.ordinal();
+
         if (levelSetting > LogLevel.getLowestPriority().ordinal()) {
             levelSetting = LogLevel.getLowestPriority().ordinal();
         }
+
         if (level.ordinal() < levelSetting) {
             return;
         }

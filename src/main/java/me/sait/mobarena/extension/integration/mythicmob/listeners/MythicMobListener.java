@@ -14,7 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class MythicMobListener implements Listener {
-    private MythicMobsSupport mythicMobsSupport;
+
+    private final MythicMobsSupport mythicMobsSupport;
 
     public MythicMobListener(MythicMobsSupport mythicMobsSupport) {
         this.mythicMobsSupport = mythicMobsSupport;
@@ -22,23 +23,26 @@ public class MythicMobListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void mythicMobSpawn(MythicMobSpawnEvent event) {
+
         mythicMobsSupport.runTask(() -> {
-            ActiveMob am = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
+
+            ActiveMob activeMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
+
             LogHelper.debug("A mythic mob spawned, mythic: " + event.getMobType().getInternalName() +
                     ", entity: " + event.getMobType().getEntityType());
 
+            // This is arena mob. no more checking need
             if (mythicMobsSupport.isInArena(event.getEntity())) {
-                //this is arena mob. no more checking need
                 return;
             }
 
-            if (am == null) {
-                LogHelper.error("Could not found the entity object of spawned mythic mob");
+            if (activeMob == null) {
+                LogHelper.error("Could not find the entity object of spawned mythic mob.");
                 return;
             }
 
-            if (am.getParent() != null) {
-                Entity parent = am.getParent().getEntity().getBukkitEntity();
+            if (activeMob.getParent() != null) {
+                Entity parent = activeMob.getParent().getEntity().getBukkitEntity();
                 ActiveMob parentMM = MythicMobs.inst().getAPIHelper().getMythicMobInstance(parent);
                 if (parentMM != null) {
                     LogHelper.debug(event.getMobType().getInternalName() + " spawned via skill Summon by " + parentMM.getType().getInternalName());
@@ -57,14 +61,14 @@ public class MythicMobListener implements Listener {
             }
 
             if (mythicMobsSupport.getArenaAtLocation(event.getLocation()) != null) {
-                LogHelper.debug("A non-arena mythic mob spawned inside arena: "  +
+                LogHelper.debug("A non-arena mythic mob spawned inside arena: " +
                         event.getMobType().getInternalName());
                 if (ConfigManager.isBlockNonArenaMythicMob()) {
+
                     //cant cancel event since we run this on later tick
                     event.getEntity().remove();
-//                    event.setCancelled();
                 }
             }
-        }, 1l);
+        }, 1L);
     }
 }

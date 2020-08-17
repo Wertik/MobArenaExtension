@@ -6,8 +6,6 @@ import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import me.sait.mobarena.extension.log.LogHelper;
-import me.sait.mobarena.extension.log.LogLevel;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -16,12 +14,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
 public class MythicMobCreature extends MACreature {
+
     private MythicMobsSupport mythicMobsSupport;
     private MythicMob mythicMob;
+
     private final Boolean isLivingEntity;
 
     public MythicMobCreature(MythicMobsSupport mythicMobsSupport, MythicMob mythicMob) {
-        super(mythicMob.getInternalName().toLowerCase().replaceAll("[-_\\.]",""),
+        super(mythicMob.getInternalName().toLowerCase().replaceAll("[-_\\.]", ""),
                 EntityType.fromName(mythicMob.getEntityType()));
 
         this.mythicMobsSupport = mythicMobsSupport;

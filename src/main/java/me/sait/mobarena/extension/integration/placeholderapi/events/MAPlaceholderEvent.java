@@ -4,7 +4,11 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class MAPlaceholderEvent extends Event {
+
+    //TODO Don't think this is necessary.
+
     private static final HandlerList handlers = new HandlerList();
+
     private String param;
     private String result;
 

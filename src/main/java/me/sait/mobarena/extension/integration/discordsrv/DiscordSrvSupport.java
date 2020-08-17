@@ -8,8 +8,10 @@ import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSrvLis
 import org.bukkit.entity.Player;
 
 public class DiscordSrvSupport implements Integration {
-    public static final String pluginName = "DiscordSRV";
-    private MobArena mobArena;
+
+    public static final String PLUGIN_NAME = "DiscordSRV";
+
+    private final MobArena mobArena;
     private DiscordSrvListener discordSrvListener;
 
     public DiscordSrvSupport(MobArena mobArena) {
@@ -22,7 +24,8 @@ public class DiscordSrvSupport implements Integration {
     }
 
     @Override
-    public void onReload() {}
+    public void onReload() {
+    }
 
     @Override
     public void onDisable() {
@@ -31,10 +34,7 @@ public class DiscordSrvSupport implements Integration {
 
     public boolean inIsolatedChatArena(Player player) {
         Arena arena = mobArena.getArenaMaster().getArenaWithPlayer(player);
-        if (arena != null && arena.hasIsolatedChat()) {
-            return true;
-        }
-        return false;
+        return arena != null && arena.hasIsolatedChat();
     }
 
     private void registerListeners() {

@@ -10,7 +10,6 @@ import me.sait.mobarena.extension.integration.placeholderapi.PlaceholderAPISuppo
 import me.sait.mobarena.extension.log.LogHelper;
 import me.sait.mobarena.extension.log.LogLevel;
 import me.sait.mobarena.extension.services.MetricsService;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -18,11 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MobArenaExtension extends JavaPlugin {
+
     private ConfigManager configManager;
     private MobArena mobArena;
     private MetricsService metricsService;
 
     private static List<Integration> extensions;
+
     private MythicMobsSupport mythicMobsSupport;
     private PlaceholderAPISupport placeholderAPISupport;
     private DiscordSrvSupport discordSrvSupport;
@@ -110,7 +111,7 @@ public final class MobArenaExtension extends JavaPlugin {
     private void initMythicMob() {
         if (configManager.isMythicMobEnabled()) {
             LogHelper.log("Init mythic mob", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(MythicMobsSupport.pluginName)) {
+            if (!getServer().getPluginManager().isPluginEnabled(MythicMobsSupport.PLUGIN_NAME)) {
                 LogHelper.log(
                         "MythicMobs plugin can not be found. Install it or disable mythicmob extension in config",
                         LogLevel.CRITICAL
@@ -127,14 +128,15 @@ public final class MobArenaExtension extends JavaPlugin {
                     LogHelper.debug("Auto reload MobArena so it load mythic mobs now if have");
                     mobArena.reload();
                 }
-            } catch (RuntimeException error) {}
+            } catch (RuntimeException error) {
+            }
         }
     }
 
     private void initPlaceholderAPI() {
         if (configManager.isPlaceholderAPIEnabled()) {
             LogHelper.log("Init placeholder api", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(PlaceholderAPISupport.pluginName)) {
+            if (!getServer().getPluginManager().isPluginEnabled(PlaceholderAPISupport.PLUGIN_NAME)) {
                 LogHelper.log(
                         "PlaceholderAPI plugin can not be found. Install it or disable placeholderapi extension in config",
                         LogLevel.CRITICAL
@@ -149,9 +151,9 @@ public final class MobArenaExtension extends JavaPlugin {
     }
 
     private void initDiscordSrv() {
-        if (configManager.isDiscordSrvEnabled()) {
+        if (ConfigManager.isDiscordSrvEnabled()) {
             LogHelper.log("Init discordsrv", LogLevel.DETAIL);
-            if (!getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.pluginName)) {
+            if (!getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.PLUGIN_NAME)) {
                 LogHelper.log(
                         "DiscordSRV plugin can not be found. Install it or disable discordsrv extension in config",
                         LogLevel.CRITICAL
@@ -167,7 +169,7 @@ public final class MobArenaExtension extends JavaPlugin {
 
     private void disableDiscordSrv() {
         if (configManager.isDiscordSrvEnabled() &&
-                getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.pluginName) &&
+                getServer().getPluginManager().isPluginEnabled(DiscordSrvSupport.PLUGIN_NAME) &&
                 discordSrvSupport != null
         ) {
             discordSrvSupport.onDisable();

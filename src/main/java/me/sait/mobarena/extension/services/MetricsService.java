@@ -6,7 +6,8 @@ import me.sait.mobarena.extension.log.LogLevel;
 import org.bstats.bukkit.Metrics;
 
 public class MetricsService {
-    private MobArenaExtension extension;
+
+    private final MobArenaExtension extension;
     private Metrics metrics;
 
     public MetricsService() {
