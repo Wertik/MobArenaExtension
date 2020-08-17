@@ -86,7 +86,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
     private void setupMobArena() {
         this.mobArena = (MobArena) getServer().getPluginManager().getPlugin("MobArena");
 
-        if (this.mobArena == null || !mobArena.isEnabled()) {
+        if (this.mobArena == null) {
             getExtensionManager().disable();
             LogHelper.error("Mob Arena is not installed, install and reload this plugin.");
         }

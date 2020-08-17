@@ -48,7 +48,7 @@ public class MobArenaExpansion extends PlaceholderExpansion {
         if (arena == null) {
             arena = mobArena.getArenaMaster().getArenaWithSpectator(player);
 
-            if (arena == null) return "";
+            if (arena == null) return "no_arena";
         }
 
         String[] args = params.split("_");

@@ -46,8 +46,10 @@ public class MobArenaExtensionCommand implements CommandExecutor {
 
                 if (extension == null) return true;
 
-                plugin.getExtensionManager().enableExtension(extension);
-                sender.sendMessage(CommonUtils.color("&7Enabled extension &f" + extension.getName()));
+                if (plugin.getExtensionManager().enableExtension(extension))
+                    sender.sendMessage(CommonUtils.color("&7Enabled extension &f" + extension.getName()));
+                else
+                    sender.sendMessage(CommonUtils.color("&cCould not enable &f" + extension.getName()));
                 break;
             case "disable":
                 if (args.length == 1) {

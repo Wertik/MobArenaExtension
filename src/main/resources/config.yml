@@ -3,7 +3,7 @@
 log-level: 2
 
 # Extension settings.
-extension:
+extensions:
   mythicmobs:
     enabled: false
 

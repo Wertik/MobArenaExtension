@@ -33,6 +33,7 @@ public class ExtensionManager {
 
         try {
             extension.disable();
+            LogHelper.debug("Disabled " + extension.getName());
         } catch (Exception e) {
             LogHelper.info("Encountered an error when enabling " + extension.getName());
             LogHelper.error("Error: " + e.getMessage());
@@ -96,12 +97,13 @@ public class ExtensionManager {
     public boolean enableExtension(Extension extension) {
 
         if (plugin.getMobArena() == null) {
-            LogHelper.debug("Could not reload extension " + extension.getName() + ", Mob Arena not installed -- disabling.");
+            LogHelper.debug("Could not enable extension " + extension.getName() + ", Mob Arena not installed -- disabling.");
             disableExtension(extension);
             return false;
         }
 
         if (extension.isEnabled() || !shouldEnable(extension.getName())) {
+            LogHelper.debug("Could not enable " + extension.getName() + ", enabled when it shouldn't be -- disabling.");
             disableExtension(extension);
             return false;
         }
