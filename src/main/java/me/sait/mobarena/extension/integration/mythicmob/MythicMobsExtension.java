@@ -86,8 +86,8 @@ public class MythicMobsExtension extends Extension {
     }
 
     private void registerListeners() {
-        getMobArena().getServer().getPluginManager().registerEvents(new MythicMobListener(this), getExtensionPlugin());
-        getMobArena().getServer().getPluginManager().registerEvents(new MobArenaListener(this), getExtensionPlugin());
+        getExtensionPlugin().getServer().getPluginManager().registerEvents(new MythicMobListener(this), getExtensionPlugin());
+        getExtensionPlugin().getServer().getPluginManager().registerEvents(new MobArenaListener(this), getExtensionPlugin());
     }
 
     private void registerMobs() {

@@ -2,6 +2,7 @@ package me.sait.mobarena.extension;
 
 import com.garbagemule.MobArena.MobArena;
 import me.sait.mobarena.extension.extension.ExtensionManager;
+import me.sait.mobarena.extension.integration.discordsrv.DiscordSRVExtension;
 import me.sait.mobarena.extension.integration.mythicmob.MythicMobsExtension;
 import me.sait.mobarena.extension.integration.placeholderapi.PlaceholderExtension;
 import me.sait.mobarena.extension.log.LogHelper;
@@ -42,6 +43,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
 
         new PlaceholderExtension().register();
         new MythicMobsExtension().register();
+        new DiscordSRVExtension().register();
 
         startMetrics();
     }

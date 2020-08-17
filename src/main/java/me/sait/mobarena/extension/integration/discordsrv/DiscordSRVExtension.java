@@ -3,12 +3,12 @@ package me.sait.mobarena.extension.integration.discordsrv;
 import com.garbagemule.MobArena.framework.Arena;
 import github.scarsz.discordsrv.DiscordSRV;
 import me.sait.mobarena.extension.extension.Extension;
-import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSrvListener;
+import me.sait.mobarena.extension.integration.discordsrv.listeners.DiscordSRVListener;
 import org.bukkit.entity.Player;
 
-public class DiscordSrvSupport extends Extension {
+public class DiscordSRVExtension extends Extension {
 
-    private DiscordSrvListener discordSrvListener;
+    private DiscordSRVListener listener;
 
     @Override
     public String getName() {
@@ -41,16 +41,15 @@ public class DiscordSrvSupport extends Extension {
     }
 
     private void registerListeners() {
-        if (discordSrvListener == null) {
-            discordSrvListener = new DiscordSrvListener(this);
-        }
-        DiscordSRV.api.subscribe(discordSrvListener);
+        if (listener == null)
+            listener = new DiscordSRVListener(this);
+        DiscordSRV.api.subscribe(listener);
     }
 
     private void unregisterListeners() {
-        if (discordSrvListener != null) {
-            DiscordSRV.api.unsubscribe(discordSrvListener);
-            discordSrvListener = null;
+        if (listener != null) {
+            DiscordSRV.api.unsubscribe(listener);
+            listener = null;
         }
     }
 }
