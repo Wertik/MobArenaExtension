@@ -1,4 +1,4 @@
-# Mob Arena Extension  [![Build status](https://ci.appveyor.com/api/projects/status/npoql7iisagunifw/branch/master?svg=true)](https://ci.appveyor.com/project/SaitDev/mobarenaextension/branch/master)
+# Mob Arena Extension
 
 Extend the functionality of Mob Arena by using pre-coded extensions, or code one yourself with provided API.
 
@@ -7,25 +7,22 @@ Extend the functionality of Mob Arena by using pre-coded extensions, or code one
 * Install the plugin (into your /plugins/ folder of course)
 * Enable wanted extension in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
-### Supported Plugins
+## Supported Plugins
 
-`MythicMobs`
-* Install MythicMobs. Then create cool mobs ([docs](https://mythicmobs.net/manual/) on their offical website)
-* Restart your server (see [Known issues](#Known-Issues))
-* Use mythic mob's name in arena waves config
+### MythicMobs
 
-`PlaceholderAPI`
+Mythic mobs can be spawned in arena by using their internal MythicMobs name in MobArena/[waves.yml](https://github.com/garbagemule/MobArena/blob/master/src/main/resources/res/waves.yml) monsters section.
 
-Placeholders:
+### PlaceholderAPI
 
 Key | description
 ------------|-------------
-mobarena_total_enabled | amount of arenas is enabled
-mobarena_arena_name | name of arena that player is in
-mobarena_arena_wave | current wave number of the arena
-mobarena_arena_wave_final | the final wave number of the arena 
-mobarena_arena_mobs | amount of mobs alive in arena
-mobarena_statistic_(statName) | player statistic fetched from Mob Arena
+%mobarena_total_enabled% | amount of arenas is enabled
+%mobarena_arena_name% | name of arena that player is in
+%mobarena_arena_wave% | current wave number of the arena
+%mobarena_arena_wave_final% | the final wave number of the arena 
+%mobarena_arena_mobs% | amount of mobs alive in arena
+%mobarena_arena_statistic_(statName)% | player statistic fetched from Mob Arena
 
 Available statistics:
 * `kills` -- amount of mob kills the player has
@@ -39,20 +36,18 @@ Available statistics:
 
 If in chat isolated arena, messages wont be sent to discord.
 
-### Other extensions
+## Other extensions
 
-`Commands`
+### Commands
 
 Send commands on different Arena events.
 Examples in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
-### Known Issues
-* MythicMobs allow using some non-living entity (armor stand) but MobArena only allow living entity. Which mean you can not use non-living entity mythic mob in MobArena `yet`
-* Adding new mob, rename or remove mob in MythicMobs wont get sync to MobArena, you should restart server
-* Using similar mythic mob name is not compatible, like `Hero brine`, `hero-brine`, `Hero brines`
-* This is a bug from MythicMob itself, when mob A spawn a minion B --> B has parent that is A. This is intended behaviour, but when using skill `Summon` without radius or with radius = 0, A wont be B's parent. Always use summon radius higher than 0 if you plan to use that in MobArena
-
-3 first issues will need to wait for the next MobArena [major patch](https://github.com/garbagemule/MobArena/projects/5)
+## Known Issues
+* MythicMobs allows using some non-living entities (armor stand for ex.), which MobArena does not allow.
+* Adding, renaming or removing mobs in MythicMobs wont get synced into MobArena, you should restart the server.
+* Using similar mythic mob name is not compatible, like `Hero brine`, `hero-brine`, `Hero brines`.
+* This is a bug from MythicMob itself, when mob A spawn a minion B --> B has parent that is A. This is intended behaviour, but when using skill `Summon` without radius or with radius = 0, A wont be B's parent. Always use summon radius higher than 0 if you plan to use that in MobArena.
 
 ## Extension API
 
