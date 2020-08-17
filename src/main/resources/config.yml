@@ -13,3 +13,11 @@ extensions:
     enabled: false
   discordsrv:
     enabled: false
+  macommands:
+    enabled: true
+
+    commands:
+      start:
+        - 'say Hello world!'
+      end:
+        - 'say Bye world!'

@@ -6,6 +6,7 @@ import me.sait.mobarena.extension.extensions.ExtensionManager;
 import me.sait.mobarena.extension.extensions.internal.discordsrv.DiscordSRVExtension;
 import me.sait.mobarena.extension.extensions.internal.mythicmob.MythicMobsExtension;
 import me.sait.mobarena.extension.extensions.internal.placeholderapi.PlaceholderExtension;
+import me.sait.mobarena.extension.extensions.macommands.CommandsExtension;
 import me.sait.mobarena.extension.log.LogHelper;
 import me.sait.mobarena.extension.services.MetricsService;
 import me.sait.mobarena.extension.utils.CommonUtils;
@@ -46,6 +47,7 @@ public final class MobArenaExtensionPlugin extends JavaPlugin {
         new PlaceholderExtension().register();
         new MythicMobsExtension().register();
         new DiscordSRVExtension().register();
+        new CommandsExtension().register();
 
         getCommand("mobarenaextension").setExecutor(new MobArenaExtensionCommand(this));
 
