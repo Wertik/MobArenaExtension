@@ -29,9 +29,9 @@ public class MobArenaExtensionCommand implements CommandExecutor {
                 StringBuilder msg = new StringBuilder("&7Registered extensions: ");
                 int n = 0;
                 for (Extension extension : plugin.getExtensionManager().getExtensions()) {
-                    msg.append(extension.isEnabled() ? "&a" : "&c");
-                    if (n < plugin.getExtensionManager().getExtensions().size())
-                        msg.append(extension.getName()).append(", ");
+                    msg.append(extension.isEnabled() ? "&a" : "&c").append(extension.getName());
+                    if (n < plugin.getExtensionManager().getExtensions().size() - 1)
+                        msg.append(", ");
                     n++;
                 }
                 sender.sendMessage(CommonUtils.color(msg.toString()));
