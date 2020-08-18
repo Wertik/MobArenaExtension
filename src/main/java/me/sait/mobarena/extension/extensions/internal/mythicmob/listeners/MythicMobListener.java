@@ -27,8 +27,7 @@ public class MythicMobListener implements Listener {
 
             ActiveMob activeMob = MythicMobs.inst().getAPIHelper().getMythicMobInstance(event.getEntity());
 
-            LogHelper.debug("A mythic mob spawned, mythic: " + event.getMobType().getInternalName() +
-                    ", entity: " + event.getMobType().getEntityType());
+            LogHelper.debug("A mythic mob spawned, mythic: " + event.getMobType().getInternalName() + ", entity type: " + event.getMobType().getEntityType());
 
             // This is arena mob. no more checking need
             if (extension.isInArena(event.getEntity())) {

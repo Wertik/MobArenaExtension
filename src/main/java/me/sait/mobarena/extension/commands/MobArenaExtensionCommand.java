@@ -46,7 +46,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
 
                 if (extension == null) return true;
 
-                if (plugin.getExtensionManager().enableExtension(extension))
+                if (extension.enable())
                     sender.sendMessage(CommonUtils.color("&7Enabled extension &f" + extension.getName()));
                 else
                     sender.sendMessage(CommonUtils.color("&cCould not enable &f" + extension.getName()));
@@ -61,7 +61,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
 
                 if (extension == null) return true;
 
-                plugin.getExtensionManager().disableExtension(extension);
+                extension.disable();
                 sender.sendMessage(CommonUtils.color("&7Disabled extension &f" + extension.getName()));
                 break;
             case "reload":
@@ -74,7 +74,7 @@ public class MobArenaExtensionCommand implements CommandExecutor {
 
                 if (extension == null) return true;
 
-                plugin.getExtensionManager().reloadExtension(extension);
+                extension.reload();
                 sender.sendMessage(CommonUtils.color("&7Reloaded extension &f" + extension.getName()));
                 break;
             default:
