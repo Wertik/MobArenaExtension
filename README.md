@@ -22,6 +22,9 @@ Key | description
 %mobarena_arena_wave% | current wave number of the arena
 %mobarena_arena_wave_final% | the final wave number of the arena 
 %mobarena_arena_mobs% | amount of mobs alive in arena
+%mobarena_arena_players_alive% | amount of players alive
+%mobarena_arena_players_dead% | amount of players dead
+%mobarena_arena_players% | total number of players
 %mobarena_arena_statistic_(statName)% | player statistic fetched from Mob Arena
 
 Available statistics:
