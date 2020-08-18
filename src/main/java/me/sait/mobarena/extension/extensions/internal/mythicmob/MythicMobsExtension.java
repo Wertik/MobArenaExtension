@@ -39,6 +39,7 @@ public class MythicMobsExtension extends Extension {
 
     @Override
     public void onReload() {
+        registerMobs();
     }
 
     @Override
@@ -90,18 +91,22 @@ public class MythicMobsExtension extends Extension {
     }
 
     private void registerMobs() {
-        Collection<MythicMob> mmMobs = MythicMobs.inst().getMobManager().getMobTypes();
+        Collection<MythicMob> mobs = MythicMobs.inst().getMobManager().getMobTypes();
 
-        for (MythicMob mob : mmMobs) {
+        for (MythicMob mob : mobs) {
 
             if (MACreature.fromString(mob.getInternalName()) != null) {
-                throw new IllegalArgumentException("Can not register mythic mobs with similar name: " + mob.getInternalName());
+                LogHelper.debug("Mythic mob " + mob.getInternalName() + " already registered.");
+                continue;
             }
 
             new MythicMobCreature(this, mob);
 
             registeredMobs.add(mob);
-            LogHelper.debug("Registered mythic mob: " + mob.getInternalName());
+            if (MACreature.fromString(mob.getInternalName()) != null)
+                LogHelper.debug("Registered mythic mob: " + mob.getInternalName());
+            else
+                LogHelper.debug("Couldn't register " + mob.getInternalName());
         }
     }
 }
