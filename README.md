@@ -7,6 +7,17 @@ Extend the functionality of Mob Arena by using pre-coded extensions, or code one
 * Install the plugin (into your /plugins/ folder of course)
 * Enable wanted extension in [config.yml](https://github.com/Wertik/MobArenaExtension/blob/master/src/main/resources/config.yml)
 
+## Commands
+
+Command | Description
+--------|------------
+/mae list | list installed extensions
+/mae reload (extension) | reload extension(s)
+/mae enable (extension) | enable extension(s)
+/mae disable (extension) | disable extension(s)
+
+`* Manipulates all of registered extensions if none is specified.`
+
 ## Extensions
 
 ### MythicMobs
@@ -15,7 +26,7 @@ Mythic mobs can be spawned in arena by using their name instead of entity types 
 
 ### PlaceholderAPI
 
-Key | description
+Placeholder | Description
 ------------|-------------
 %mobarena_total_enabled% | amount of arenas enabled
 %mobarena_arena_name% | name of arena that player is in
