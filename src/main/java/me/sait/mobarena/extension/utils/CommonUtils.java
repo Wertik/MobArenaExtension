@@ -23,4 +23,12 @@ public class CommonUtils {
         return MobArenaExtensionPlugin.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI") != null ?
                 PlaceholderAPI.setPlaceholders(player, str) : str;
     }
+
+    public static int compileVersionNumber(String versionString) {
+        try {
+            return Integer.parseInt(versionString.replace(".", ""));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }
