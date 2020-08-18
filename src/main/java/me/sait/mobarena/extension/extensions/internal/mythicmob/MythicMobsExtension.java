@@ -44,6 +44,7 @@ public class MythicMobsExtension extends Extension {
 
     @Override
     public void onDisable() {
+        //TODO Try to use Reflection to unregister MythicMobs from MACreature
     }
 
     public void spawnMythicMob(Arena arena, Entity entity) {
@@ -93,6 +94,8 @@ public class MythicMobsExtension extends Extension {
     private void registerMobs() {
         Collection<MythicMob> mobs = MythicMobs.inst().getMobManager().getMobTypes();
 
+        boolean reload = false;
+
         for (MythicMob mob : mobs) {
 
             if (MACreature.fromString(mob.getInternalName()) != null) {
@@ -103,10 +106,15 @@ public class MythicMobsExtension extends Extension {
             new MythicMobCreature(this, mob);
 
             registeredMobs.add(mob);
-            if (MACreature.fromString(mob.getInternalName()) != null)
+
+            if (MACreature.fromString(mob.getInternalName()) != null) {
                 LogHelper.debug("Registered mythic mob: " + mob.getInternalName());
-            else
+                reload = true;
+            } else
                 LogHelper.debug("Couldn't register " + mob.getInternalName());
         }
+
+        // Re-initialize arena master to account for new mobs.
+        if (reload) getMobArena().getArenaMaster().initialize();
     }
 }

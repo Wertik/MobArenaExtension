@@ -16,29 +16,24 @@ import org.bukkit.entity.LivingEntity;
 
 public class MythicMobCreature extends MACreature {
 
-    private final MythicMobsExtension extensionPlugin;
+    private final MythicMobsExtension extension;
     private final MythicMob mythicMob;
 
     private final boolean livingEntity;
 
-    public MythicMobCreature(MythicMobsExtension extensionPlugin, MythicMob mythicMob) {
+    public MythicMobCreature(MythicMobsExtension extension, MythicMob mythicMob) {
         super(mythicMob.getInternalName().toLowerCase().replaceAll("[-_.]", ""),
                 CommonUtils.getEntityType(mythicMob.getEntityType()));
 
-        this.extensionPlugin = extensionPlugin;
+        this.extension = extension;
         this.mythicMob = mythicMob;
 
         EntityType entityType = CommonUtils.getEntityType(mythicMob.getEntityType());
 
-        if (entityType != null) {
-            if (entityType.isAlive()) {
-                livingEntity = true;
-            } else {
-                livingEntity = false;
-                LogHelper.warn(mythicMob.getInternalName() + " is not a living entity, currently not compatible with Mob Arena");
-            }
-        } else
-            livingEntity = false;
+        this.livingEntity = entityType != null && entityType.isAlive();
+
+        if (!livingEntity)
+            LogHelper.warn(mythicMob.getInternalName() + " is not a living entity, currently not compatible with Mob Arena.");
     }
 
     @Override
@@ -52,14 +47,14 @@ public class MythicMobCreature extends MACreature {
                 return null;
             }
 
-            extensionPlugin.spawnMythicMob(arena, mythicEntity);
+            extension.spawnMythicMob(arena, mythicEntity);
             LivingEntity livingEntity = ((LivingEntity) mythicEntity);
 
             // Temp fix for MA core reset mm hp due to implementation of health-multiplier
             double multiplier = arena.getWaveManager().getCurrent().getHealthMultiplier();
             double maxHp = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
 
-            extensionPlugin.runTask(() -> {
+            extension.runTask(() -> {
                 double health = maxHp * multiplier;
 
                 livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
