@@ -122,7 +122,7 @@ public class ExtensionManager {
         this.registeredExtensions.put(extension.getName(), extension);
         LogHelper.debug("Registered extension " + extension.getName());
 
-        return enableExtension(extension);
+        return extension.enable();
     }
 
     /**
