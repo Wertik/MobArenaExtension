@@ -12,3 +12,6 @@ commands:
   mobarenaextension:
     aliases: [mae, arenaextension, mobarenaextensions]
     description: Main plugin command
+permissions:
+  mobarenaextensions.control:
+    description: Manage extensions

@@ -24,6 +24,11 @@ public class MobArenaExtensionCommand implements CommandExecutor {
             return true;
         }
 
+        if (!sender.hasPermission("mobarenaextensions.control")) {
+            sender.sendMessage(CommonUtils.color("&cYou don't have permissions to do this."));
+            return true;
+        }
+
         switch (args[0].toLowerCase()) {
             case "list":
                 StringBuilder msg = new StringBuilder("&7Registered extensions: ");
