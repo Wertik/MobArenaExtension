@@ -135,7 +135,7 @@ public class ExtensionManager {
     public void unregisterExtension(Extension extension) {
         if (extension == null) return;
 
-        disableExtension(extension);
+        extension.disable();
 
         this.registeredExtensions.remove(extension.getName());
         LogHelper.debug("Unregistered extension " + extension.getName());
@@ -143,13 +143,13 @@ public class ExtensionManager {
 
     public void enableAll() {
         for (Extension extension : this.registeredExtensions.values()) {
-            enableExtension(extension);
+            extension.enable();
         }
     }
 
     public void reloadAll() {
         for (Extension extension : this.registeredExtensions.values()) {
-            reloadExtension(extension);
+            extension.reload();
         }
     }
 
@@ -158,7 +158,7 @@ public class ExtensionManager {
      */
     public void disableAll() {
         for (Extension extension : this.registeredExtensions.values()) {
-            disableExtension(extension);
+            extension.disable();
         }
     }
 
