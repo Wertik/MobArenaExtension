@@ -21,7 +21,8 @@ public class PlaceholderExtension extends Extension {
     @Override
     public boolean onEnable() {
         this.expansion = new MobArenaExpansion(MobArenaExtensionPlugin.getInstance().getMobArena());
-        return this.expansion.register();
+        //TODO Unregister old expansion and register new.
+        return true;
     }
 
     @Override

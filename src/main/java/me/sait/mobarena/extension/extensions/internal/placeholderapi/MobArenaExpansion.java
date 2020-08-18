@@ -7,6 +7,8 @@ import me.sait.mobarena.extension.MobArenaExtensionPlugin;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.stream.Collectors;
+
 public class MobArenaExpansion extends PlaceholderExpansion {
 
     private final MobArenaExtensionPlugin plugin;
@@ -42,7 +44,7 @@ public class MobArenaExpansion extends PlaceholderExpansion {
             return String.valueOf(mobArena.getArenaMaster().getEnabledArenas().size());
         }
 
-        if (player == null) return "";
+        if (player == null) return "no_player";
 
         Arena arena = mobArena.getArenaMaster().getArenaWithPlayer(player);
         if (arena == null) {
@@ -76,12 +78,24 @@ public class MobArenaExpansion extends PlaceholderExpansion {
                     if (args.length == 3)
                         return String.valueOf(arena.getArenaPlayer(player).getStats().getInt(args[2]));
                 case "players":
-                    if (args.length == 3 && args[2].equalsIgnoreCase("alive"))
-                        return String.valueOf(arena.getPlayerCount());
+                    if (args.length == 3)
+                        if (args[2].equalsIgnoreCase("alive"))
+                            return String.valueOf(countAlivePlayers(arena));
+                        else if (args[2].equalsIgnoreCase("dead"))
+                            return String.valueOf(arena.getPlayerCount() - countAlivePlayers(arena));
+                    return String.valueOf(arena.getPlayerCount());
             }
         } /*else if (args[0].equals("player")) {
 
         }*/
         return "invalid_params";
+    }
+
+    private int countAlivePlayers(Arena arena) {
+        return arena.getAllPlayers().stream()
+                .map(arena::getArenaPlayer)
+                .filter(ap -> !ap.isDead())
+                .collect(Collectors.toSet())
+                .size();
     }
 }
