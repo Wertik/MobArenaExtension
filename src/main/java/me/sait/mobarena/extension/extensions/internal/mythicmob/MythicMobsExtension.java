@@ -98,10 +98,11 @@ public class MythicMobsExtension extends Extension {
 
         for (MythicMob mob : mobs) {
 
-            if (MACreature.fromString(mob.getInternalName()) != null) {
+            // Ignore and re-register mobs to ensure latest MAE plugin reference.
+            /*if (MACreature.fromString(mob.getInternalName()) != null) {
                 LogHelper.debug("Mythic mob " + mob.getInternalName() + " is already registered.");
                 continue;
-            }
+            }*/
 
             new MythicMobCreature(this, mob);
 
