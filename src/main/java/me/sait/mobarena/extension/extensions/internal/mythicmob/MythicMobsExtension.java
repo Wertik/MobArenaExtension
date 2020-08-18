@@ -115,11 +115,10 @@ public class MythicMobsExtension extends Extension {
         }
 
         // Re-initialize arena master to account for new mobs.
-        if (reload && getConfigurationSection().getBoolean("reload-arena-master", false)) {
-            LogHelper.debug("Reloading Arena Master.");
+        if (reload && getConfigurationSection().getBoolean("reload-mob-arena", false)) {
+            LogHelper.debug("Reloading MobArena to parse new creatures..");
 
-            getMobArena().getArenaMaster().getArenas().forEach(Arena::forceEnd);
-            getMobArena().getArenaMaster().initialize();
+            getMobArena().reload();
         }
     }
 }
