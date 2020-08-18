@@ -4,6 +4,7 @@ import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.framework.Arena;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.sait.mobarena.extension.MobArenaExtensionPlugin;
+import me.sait.mobarena.extension.log.LogHelper;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,5 +98,11 @@ public class MobArenaExpansion extends PlaceholderExpansion {
                 .filter(ap -> !ap.isDead())
                 .collect(Collectors.toSet())
                 .size();
+    }
+
+    @Override
+    public boolean register() {
+        LogHelper.debug("Registered Mob Arena expansion.");
+        return super.register();
     }
 }

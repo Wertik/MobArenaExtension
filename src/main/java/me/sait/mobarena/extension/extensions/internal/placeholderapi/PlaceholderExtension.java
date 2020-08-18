@@ -29,6 +29,12 @@ public class PlaceholderExtension extends Extension {
 
     @Override
     public void onReload() {
+        // Register if it's not.
+        if (this.expansion == null)
+            this.expansion = new MobArenaExpansion(MobArenaExtensionPlugin.getInstance().getMobArena());
+
+        if (!this.expansion.isRegistered())
+            this.expansion.register();
     }
 
     @Override
