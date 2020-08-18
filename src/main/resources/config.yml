@@ -7,6 +7,9 @@ extensions:
   mythicmobs:
     enabled: false
 
+    # Reload MobArena arena handler after initializing new creatures.
+    reload-arena-master: true
+
     # Any mythic mobs spawn inside arena but ain't a mob of arena will be removed
     block-non-arena-mythic-mob: true
   placeholderapi:

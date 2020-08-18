@@ -99,22 +99,27 @@ public class MythicMobsExtension extends Extension {
         for (MythicMob mob : mobs) {
 
             if (MACreature.fromString(mob.getInternalName()) != null) {
-                LogHelper.debug("Mythic mob " + mob.getInternalName() + " already registered.");
+                LogHelper.debug("Mythic mob " + mob.getInternalName() + " is already registered.");
                 continue;
             }
 
             new MythicMobCreature(this, mob);
 
-            registeredMobs.add(mob);
-
             if (MACreature.fromString(mob.getInternalName()) != null) {
-                LogHelper.debug("Registered mythic mob: " + mob.getInternalName());
+                registeredMobs.add(mob);
                 reload = true;
+
+                LogHelper.debug("Registered new mythic mob " + mob.getInternalName());
             } else
                 LogHelper.debug("Couldn't register " + mob.getInternalName());
         }
 
         // Re-initialize arena master to account for new mobs.
-        if (reload) getMobArena().getArenaMaster().initialize();
+        if (reload && getConfigurationSection().getBoolean("reload-arena-master", false)) {
+            LogHelper.debug("Reloading Arena Master.");
+
+            getMobArena().getArenaMaster().getArenas().forEach(Arena::forceEnd);
+            getMobArena().getArenaMaster().initialize();
+        }
     }
 }
