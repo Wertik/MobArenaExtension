@@ -77,8 +77,8 @@ public class MobArenaExpansion extends PlaceholderExpansion {
                         if (args[3].equalsIgnoreCase("alive"))
                             return String.valueOf(countAlivePlayers(arena));
                         else if (args[3].equalsIgnoreCase("dead"))
-                            return String.valueOf(arena.getPlayerCount() - countAlivePlayers(arena));
-                    return String.valueOf(arena.getPlayerCount());
+                            return String.valueOf(countPlayers(arena) - countAlivePlayers(arena));
+                    return String.valueOf(countPlayers(arena));
             }
         } else if (args[0].equals("player")) {
             if (player == null) return "no_player";
@@ -87,8 +87,13 @@ public class MobArenaExpansion extends PlaceholderExpansion {
             /*switch (args[1].toLowerCase()) {
 
             }*/
+            return "not_implemented";
         }
         return "invalid_params";
+    }
+
+    private int countPlayers(Arena arena) {
+        return arena.getAllPlayers().size();
     }
 
     private int countAlivePlayers(Arena arena) {
