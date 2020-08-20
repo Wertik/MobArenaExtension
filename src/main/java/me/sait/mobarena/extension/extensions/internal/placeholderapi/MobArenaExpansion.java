@@ -56,6 +56,8 @@ public class MobArenaExpansion extends PlaceholderExpansion {
 
             if (arena == null) return "invalid_arena";
 
+            if (args.length == 2) return "not_enough_params";
+
             switch (args[2].toLowerCase()) {
                 case "prefix":
                     return arena.getSettings().getString("prefix", "");
@@ -80,7 +82,7 @@ public class MobArenaExpansion extends PlaceholderExpansion {
                             return String.valueOf(countPlayers(arena) - countAlivePlayers(arena));
                     return String.valueOf(countPlayers(arena));
             }
-        } else if (args[0].equals("player")) {
+        } else if (args[0].equalsIgnoreCase("player")) {
             if (player == null) return "no_player";
 
             //TODO Create new Extension to capture player statistics and use them here.
