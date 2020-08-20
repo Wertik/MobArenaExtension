@@ -80,6 +80,8 @@ public class MobArenaExpansion extends PlaceholderExpansion {
                             return String.valueOf(countAlivePlayers(arena));
                         else if (args[3].equalsIgnoreCase("dead"))
                             return String.valueOf(countPlayers(arena) - countAlivePlayers(arena));
+                        else if (args[3].equalsIgnoreCase("spec"))
+                            return String.valueOf(countSpectators(arena));
                     return String.valueOf(countPlayers(arena));
             }
         } else if (args[0].equalsIgnoreCase("player")) {
@@ -96,6 +98,10 @@ public class MobArenaExpansion extends PlaceholderExpansion {
 
     private int countPlayers(Arena arena) {
         return arena.getAllPlayers().size();
+    }
+
+    private int countSpectators(Arena arena) {
+        return arena.getSpectators().size();
     }
 
     private int countAlivePlayers(Arena arena) {
