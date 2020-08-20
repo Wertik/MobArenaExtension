@@ -170,6 +170,10 @@ public class ExtensionManager {
         return plugin.getConfig().getBoolean("extensions." + extensionName + ".enabled", false);
     }
 
+    public boolean isEnabled(String extensionName) {
+        return this.getExtension(extensionName) != null && this.getExtension(extensionName).isEnabled();
+    }
+
     public boolean isRegistered(String extensionName) {
         return this.registeredExtensions.containsKey(extensionName);
     }
